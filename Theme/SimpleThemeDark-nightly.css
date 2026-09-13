@@ -1139,21 +1139,14 @@ h2 {
 }
 
 .skinHeader-blurred:not(.osdHeader):not(.semiTransparent) {
-  backdrop-filter: var(--std-blur-largest);
-  background-color: var(--std-sys-color-surface);
-  border: var(--std-border-width) solid var(--std-sys-color-outline-variant);
-  border-width: 0 0 var(--std-border-width) 0;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background-color: rgba(20, 18, 24, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .skinHeader-blurred:not(.osdHeader):not(.semiTransparent)::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  backdrop-filter: var(--std-blur-largest);
-  z-index: -1;
+  display: none;
 }
 
 .layout-mobile .skinHeader-blurred:not(.osdHeader),
@@ -1164,12 +1157,10 @@ h2 {
 .headerTop {
   -webkit-align-items: center;
   align-items: center;
-  padding: 0 1.5em;
+  padding: 0 1em;
   height: var(--appBarHeight);
-  background: var(--std-sys-color-surface);
-  border-bottom: var(--std-border-width) solid var(--std-sys-color-outline-variant);
-  backdrop-filter: var(--std-blur-large);
-  transition: background 0.2s ease;
+  background: transparent;
+  border-bottom: none;
 }
 
 .layout-desktop .headerTop {
