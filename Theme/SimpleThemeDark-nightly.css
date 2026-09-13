@@ -27,7 +27,7 @@
   color-scheme: dark;
 
   /* --- Surface Colors --- */
-  --std-sys-color-background: #0f0d13;
+  --std-sys-color-background: #0a0a0f;
   --std-sys-color-on-background: #e6e0e9;       /* 13.8:1 ✅ */
 
   --std-sys-color-surface: #141218;
@@ -41,7 +41,7 @@
 
   --std-sys-color-surface-container-lowest: #0f0d13;
   --std-sys-color-surface-container-low: #1d1b20;
-  --std-sys-color-surface-container: #211f26;
+  --std-sys-color-surface-container: #1a1a22;
   --std-sys-color-surface-container-high: #2b2930;
   --std-sys-color-surface-container-highest: #36343b;
 
@@ -1139,8 +1139,8 @@ h2 {
 }
 
 .skinHeader-blurred:not(.osdHeader):not(.semiTransparent) {
-  backdrop-filter: none;
-  background-color: var(--std-sys-color-surface-container);
+  backdrop-filter: var(--std-blur-largest);
+  background-color: var(--std-sys-color-surface);
   border: var(--std-border-width) solid var(--std-sys-color-outline-variant);
   border-width: 0 0 var(--std-border-width) 0;
 }
@@ -1164,11 +1164,12 @@ h2 {
 .headerTop {
   -webkit-align-items: center;
   align-items: center;
-  padding: 0;
+  padding: 0 1.5em;
   height: var(--appBarHeight);
-  background: linear-gradient(180deg, var(--std-sys-color-surface-container) 0%, transparent 100%);
-  border-bottom: none;
-  backdrop-filter: none;
+  background: var(--std-sys-color-surface);
+  border-bottom: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+  backdrop-filter: var(--std-blur-large);
+  transition: background 0.2s ease;
 }
 
 .layout-desktop .headerTop {
