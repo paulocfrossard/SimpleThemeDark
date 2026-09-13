@@ -15,27 +15,16 @@
 
 /* Fonts imported externally via Custom CSS:
    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300..800&display=swap");
-   Material Symbols Rounded loaded via @font-face below
+   @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0");
 */
 
-/* Material Symbols Rounded - Minimal (subset for faster loading) */
-@font-face {
-    font-family: "Material Symbols Rounded Minimal";
-    font-style: normal;
-    font-weight: 100 700;
-    src: url(https://fonts.gstatic.com/l/font?kit=sykg-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190FjzarESMdAUY9qjb3u1M7e05tMSFFiwiIx7ihGnzWmz-lkbjBJUko54uQNlqhKP2qww7THOuDASqI-hkRJowUB4AMXqmksLbVSypWpZCoCuR4ppEVE-Vm2EBGaEWVT1QQVqin1CJL8x-Ze-xGUuG3wq4dfIUCyyVOwlP0NhUaux0cITqh7BYw&skey=70ddea8fe54d532e&v=v362)
-        format("woff2");
+:root {
+  --iconPack: "Material Symbols Rounded";
+  --fill: 1;
+  --wght: 400;
+  --grad: 0;
+  --opsz: 24;
 }
-
-/* Material Symbols Rounded - Full */
-@font-face {
-    font-family: "Material Symbols Rounded";
-    font-style: normal;
-    font-weight: 100 700;
-    src: url(https://fonts.gstatic.com/s/materialsymbolsrounded/v362/sykg-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190Fjzag.woff2)
-        format("woff2");
-}
-
 
 /* ================================================================
    DESIGN TOKENS — MD3 Dark Theme
