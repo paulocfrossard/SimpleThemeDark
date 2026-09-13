@@ -15,11 +15,9 @@
 
 /* Fonts imported externally via Custom CSS:
    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300..800&display=swap");
-   @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0");
 */
 
 :root {
-  --iconPack: "Material Icons";
   color-scheme: dark;
 
   /* --- Surface Colors --- */
@@ -630,9 +628,8 @@ h2 {
   color: var(--std-sys-color-on-primary);
 }
 
-/* Material Icons font */
+/* Material Icons — visual styling only (Jellyfin handles font loading) */
 .material-icons {
-  font-family: "Material Icons" !important;
   font-weight: normal;
   font-style: normal;
   line-height: 1;
@@ -644,9 +641,6 @@ h2 {
   direction: ltr;
   vertical-align: middle;
   text-rendering: geometricPrecision;
-  font-feature-settings: "liga";
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
 }
 
 .material-icons.info_outline:before {
@@ -1316,8 +1310,6 @@ h2 {
 }
 
 .noHomeButtonHeader .emby-tab-button:before {
-  font-family: "Material Icons";
-  font-feature-settings: "liga";
   font-size: 1.2em;
 }
 
@@ -2271,10 +2263,6 @@ progress + span {
 
 .overview-expand.emby-button:after {
   content: "keyboard_arrow_down";
-  font-family:
-    var(--iconPack),
-    Material Icons;
-  font-feature-settings: "liga";
   background: var(--std-sys-color-surface-container);
   border-radius: 50%;
   width: 1.5em;
