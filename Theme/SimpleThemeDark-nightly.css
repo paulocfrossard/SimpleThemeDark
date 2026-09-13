@@ -24,30 +24,6 @@
   --wght: 400;
   --grad: 0;
   --opsz: 24;
-}
-
-/* ================================================================
-   DESIGN TOKENS — MD3 Dark Theme
-   ================================================================
-   Prefix: --std-
-   Color scheme: dark
-   WCAG AA contrast verified (≥ 4.5:1 for text)
-
-   Variants:
-      A) MD3 Pure       — default (Teal accent)
-     B) MD3 Surface Tint — elevation via color overlay
-   ================================================================ */
-
-
-/* ===========================================
-   SECTION 1 — MD3 Dark Color Scheme (Teal/Cyan)
-   ===========================================
-   Core palette generated from Material Theme
-   Builder teal tone 40 dark seed. All text
-   colors verified for WCAG AA compliance.
-   =========================================== */
-
-:root {
   color-scheme: dark;
 
   /* --- Surface Colors --- */
