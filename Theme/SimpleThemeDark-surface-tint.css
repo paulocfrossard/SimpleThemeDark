@@ -1,0 +1,4284 @@
+/* ============================================
+   SimpleThemeDark — MD3 Surface Tint Variant
+   ============================================
+   Variant B of the SimpleThemeDark theme.
+   Elevation is expressed as color tint (primary
+   color overlay on surface) rather than shadows.
+
+   Activate via: data-theme="md3-surface-tint"
+
+   Design principles:
+     - Cards at rest: flat surface-container (no shadow)
+     - Cards elevated: surface-container + primary tint overlay
+     - App bar: solid surface-container + outline border
+     - Sidebar: surface-container-low with secondary-container active
+     - Dialogs: surface-container-high + border (no shadow)
+     - Overall: flatter, color-driven, "Material You" aesthetic
+
+   Requires: SimpleThemeDark-tokens.css
+   Based on: ElegantFin Theme v26.09.05
+   ============================================ */
+
+
+/* ===========================================
+   SECTION 1 — Imports & Base Setup
+   =========================================== */
+
+/* Material Symbols Rounded */
+@font-face {
+    font-family: "Material Symbols Rounded";
+    font-style: normal;
+    font-weight: 100 700;
+    src: url(https://fonts.gstatic.com/s/materialsymbolsrounded/v362/sykg-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190Fjzag.woff2)
+        format("woff2");
+}
+
+/* Inter Font Family */
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+:root {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 425;
+    font-style: normal;
+    -webkit-tap-highlight-color: transparent !important;
+
+    /* Material Symbols font-variation-settings */
+    --fill: 1;
+    --wght: 400;
+    --grad: 0;
+    --opsz: 30;
+
+    color-scheme: dark;
+    color: var(--textColor);
+
+    /* Standard component sizes */
+    --largerRadius: var(--std-shape-corner-extra-large);
+    --largeRadius: var(--std-shape-corner-large);
+    --smallRadius: var(--std-shape-corner-small);
+    --smallerRadius: var(--std-shape-corner-extra-small);
+    --borderWidth: var(--std-border-width);
+    --borderWidthDouble: var(--std-border-width-thick);
+
+    /* Side padding and layout */
+    --sidePadding: 3.3%;
+    --itemColumnGap: var(--std-space-4);
+    --minEpisodeCardWidth: 26em;
+    --appBarHeight: 5em;
+
+    /* Blur tokens (Surface Tint uses less blur) */
+    --blurSmallest: var(--std-blur-smallest);
+    --blurDefault: var(--std-blur-default);
+    --blurLarge: var(--std-blur-large);
+    --blurLargest: var(--std-blur-largest);
+
+    /* Textures (flat gradients for Surface Tint) */
+    --backgroundGradient: var(--std-sys-color-background);
+    --cardBackgroundGradient: var(--std-sys-color-surface);
+    --backgroundAlphaOverlay: linear-gradient(180deg, var(--std-sys-color-background) 80%, transparent);
+    --headerColorGradient: linear-gradient(180deg, var(--std-sys-color-surface-container) 30%, 55%, transparent 90%);
+    --headerColorGradientAlt: linear-gradient(180deg, var(--std-sys-color-surface-container), 70%, transparent);
+    --headerBlurMask: linear-gradient(180deg, #fff 50%, 85%, transparent);
+
+    --cardFooterGradient: linear-gradient(0deg, var(--std-sys-color-surface-dim), 40%, transparent);
+    --topOSDGradient: linear-gradient(180deg, hsla(0, 0%, 0%, 0.8), 45%, hsla(0, 0%, 0%, 0));
+    --bottomOSDGradient: linear-gradient(0deg, hsla(0, 0%, 0%, 0.8), 45%, hsla(0, 0%, 0%, 0));
+
+    --hoverGradientV: linear-gradient(
+        0deg,
+        transparent,
+        hsla(0, 0%, 100%, 0.35) 45%,
+        hsla(0, 0%, 100%, 0.35) 55%,
+        transparent
+    );
+    --hoverGradientH: linear-gradient(
+        90deg,
+        transparent,
+        hsla(0, 0%, 100%, 0.35) 45%,
+        hsla(0, 0%, 100%, 0.35) 55%,
+        transparent
+    );
+
+    --itemBackdropMask: linear-gradient(180deg, rgba(0, 0, 0, 0.8), 75%, transparent);
+
+    /* Shadows (minimal — tint replaces most) */
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    --cardShadow: none;
+    --iconShadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
+
+    /* use --headerColorGradient if seamless app bar [default];
+       use --headerColorGradientAlt otherwise */
+    --headerBackground: var(--headerColorGradient);
+
+    /* Login page */
+    --loginPageBgUrl: url("");
+    --loginPageText: "Sign in to continue";
+
+    /* Card overlay play button position */
+    --overlayPlayButtonPosition: 2.8em;
+
+    /* Icon pack */
+    --iconPack: "Material Symbols Rounded";
+
+    /* Card behavior toggles */
+    --extraCardButtonsVisibility: none;
+    --menuButtonVisibility: block;
+    --itemOriginalTitleVisibility: block;
+    --libraryLabelVisibility: none;
+    --clearLogoVisibility: block;
+    --itemTitleVisibility: none;
+    --artistClearLogoVisibility: block;
+    --artistTitleVisibility: none;
+    --artistPageBackground: unset;
+    --miniOverlayButtonVisibility: block;
+    --endsAtVisibility: block;
+    --criticsRatingVisibility: none;
+    --cardHoverEffect: "";
+
+    /* Backdrop */
+    --backdropTrimFromTop: 10%;
+    --resumeCardScale: 1;
+
+    /* Surface Tint specific — solid app bar */
+    --appBarSeamlessBlur: none;
+    --appBarBlurStrength: none;
+    --appBarColor: var(--std-sys-color-surface-container);
+    --appBarBorder: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+    --appBarTabsPadding: 0;
+
+    /* Login page background gradient */
+    --loginPageGradient: linear-gradient(
+        to bottom,
+        var(--std-sys-color-surface-container),
+        var(--std-sys-color-background)
+    );
+}
+
+:root.layout-mobile {
+    --headerColorGradient: var(--headerColorGradientAlt);
+    --blurLargest: blur(12px);
+    --headerBlurMask: linear-gradient(180deg, #fff 60%, 90%, transparent);
+    --itemColumnGap: var(--std-space-2);
+}
+
+body {
+    --primaryItemPageNegativeSpace: 14vh;
+    --secondaryItemPageNegativeSpace: 60vh;
+    --clearLogoBottomSpace: 11em;
+}
+
+select {
+    text-overflow: ellipsis;
+}
+
+.layout-desktop > body:has(> audio[src]) {
+    --primaryItemPageNegativeSpace: calc(14vh + 5em);
+    --secondaryItemPageNegativeSpace: calc(60vh + 5em);
+}
+
+.layout-mobile > body {
+    --secondaryItemPageNegativeSpace: 45vh;
+}
+
+
+/* ===========================================
+   SECTION 2 — Material Symbols Icons
+   =========================================== */
+
+.material-icons {
+    font-family:
+        var(--iconPack),
+        Material Icons !important;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    vertical-align: middle;
+    text-rendering: geometricPrecision;
+    font-feature-settings: "liga";
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-variation-settings:
+        "FILL" var(--fill),
+        "wght" var(--wght),
+        "GRAD" var(--grad),
+        "opsz" var(--opsz);
+    transition: font-variation-settings 0.25s;
+}
+
+.material-icons.info_outline:before {
+    content: "\e88e";
+}
+
+.detailButton-icon {
+    --fill: 0;
+}
+
+.ratingbutton-icon-withrating,
+.starIcon,
+.cardOverlayButtonIcon,
+.indicatorIcon,
+.cardImageIcon {
+    --fill: 1;
+}
+
+
+/* ===========================================
+   SECTION 3 — Footer & Selection
+   =========================================== */
+
+.dashboardFooter {
+    font-family: "Noto Sans", serif;
+    transition: transform 50ms;
+}
+
+#myPreferencesMenuPage > div:after,
+.dashboardFooter::after {
+    content: var(--elegantFinFooterText);
+    font-size: 0.8em;
+    color: var(--std-sys-color-outline);
+    display: inline-grid;
+    width: 100%;
+    width: -webkit-fill-available;
+    justify-content: center;
+    font-weight: 600;
+}
+
+::selection {
+    background: var(--std-sys-color-primary);
+    color: var(--std-sys-color-on-primary);
+}
+
+
+/* ===========================================
+   SECTION 4 — Cards (Surface Tint)
+   ===========================================
+   Cards are FLAT at rest — no shadow, just
+   surface-container background. On hover, they
+   shift to surface-container-high. Active state
+   uses elevation tint overlay.
+   =========================================== */
+
+.cardImageIcon {
+    color: var(--std-sys-color-outline-variant);
+}
+
+.cardPadder .cardImageIcon {
+    color: rgba(202, 196, 208, 0.5);
+}
+
+.card:focus .cardBox.visualCardBox,
+.card:focus .cardBox:not(.visualCardBox) .cardScalable {
+    border-color: var(--std-sys-color-primary) !important;
+}
+
+.mdl-radio__focus-circle,
+.mdl-radio.show-focus .mdl-radio__button:focus + .mdl-radio__circles .mdl-radio__outer-circle,
+.mdl-radio.show-focus .mdl-radio__button:focus + .mdl-radio__circles .mdl-radio__inner-circle {
+    background: var(--std-sys-color-primary);
+    color: var(--std-sys-color-primary);
+}
+
+.emby-button {
+    gap: 1ch;
+}
+
+.emby-button.show-focus:focus,
+.paper-icon-button-light.show-focus:focus,
+.emby-tabs .emby-button.show-focus:focus {
+    background-color: var(--std-sys-color-primary) !important;
+    color: var(--std-sys-color-on-primary) !important;
+}
+
+.emby-tabs .emby-button.show-focus:focus {
+    outline: none !important;
+}
+
+[dir="ltr"] .itemsContainer > .card > .cardBox {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cardBox-bottompadded {
+    margin-bottom: 0.5em !important;
+}
+
+@media (max-width: 50em) {
+    .cardBox-bottompadded {
+        margin-bottom: 0.25em !important;
+    }
+}
+
+.vertical-wrap:not(.centered),
+.vertical-wrap.padded-right-withalphapicker,
+.padded-right-withalphapicker > .vertical-wrap {
+    justify-content: flex-start !important;
+}
+
+#episodesTab > .vertical-wrap,
+#studiosTab > .vertical-wrap,
+#channelsTab > .vertical-wrap,
+#recordingsTab > .vertical-wrap,
+#genresTab > .vertical-wrap {
+    justify-content: center !important;
+}
+
+.countIndicator,
+.fullSyncIndicator,
+.mediaSourceIndicator {
+    background: var(--std-sys-color-primary-container);
+    border: var(--std-border-width) solid var(--std-sys-color-outline);
+    color: var(--std-sys-color-on-primary-container);
+}
+
+.layout-mobile .indicator {
+    font-size: 70%;
+}
+
+/* Card Scalable — FLAT at rest, no shadow */
+.cardScalable {
+    border-radius: var(--largeRadius);
+    border: var(--std-border-width-thick) solid var(--std-sys-color-surface-variant) !important;
+    overflow: hidden !important;
+    box-shadow: none;
+    background-color: var(--std-sys-color-surface);
+    transition: transform 125ms ease, background-color 200ms ease, border-color 200ms ease;
+}
+
+@supports (aspect-ratio: 1 / 1) {
+    #castCollapsible .cardScalable,
+    #guestCastContent .cardScalable {
+        aspect-ratio: 1 / 1;
+        border-radius: 50%;
+    }
+
+    #castCollapsible .cardContent.cardImageContainer,
+    #guestCastContent .cardContent.cardImageContainer {
+        background-position-y: 33%;
+    }
+}
+
+.layout-mobile .cardScalable {
+    border: var(--std-border-width) solid var(--std-sys-color-outline-variant) !important;
+}
+
+/* Visual Card Box / Paper List — Surface Container */
+.visualCardBox,
+.paperList {
+    background-color: var(--std-sys-color-surface-container) !important;
+    border-radius: var(--largeRadius) !important;
+    border: var(--std-border-width) solid var(--std-sys-color-outline-variant) !important;
+    box-shadow: none !important;
+    overflow: hidden;
+}
+
+.layout-desktop .visualCardBox {
+    border-width: var(--std-border-width-thick) !important;
+}
+
+.visualCardBox .cardScalable {
+    border-width: 0 0 var(--std-border-width) 0 !important;
+    border-radius: 0 !important;
+    border-color: var(--std-sys-color-surface-variant) !important;
+}
+
+.cardImageContainer {
+    transition: transform 0.375s;
+}
+
+.card.squareCard[data-type="TvChannel"] .cardImageContainer.cardContent {
+    background-color: rgba(208, 188, 255, 0.15);
+}
+
+.cardImageContainer > .cardDefaultText {
+    font-size: 2em;
+    padding-top: 1.5em;
+    color: transparent;
+    white-space: pre;
+}
+
+.cardImageContainer > .cardDefaultText::before {
+    content: "?\A";
+    color: var(--std-sys-color-outline-variant);
+}
+
+/* Card Hover — tint shift, not shadow */
+.card-hoverable:hover .cardScalable,
+.card-hoverable:hover .visualCardBox {
+    border-color: var(--std-sys-color-primary) !important;
+    background-color: var(--std-sys-color-surface-container-high);
+}
+
+.card-hoverable:hover .visualCardBox .cardScalable {
+    border-color: var(--std-sys-color-surface-variant) !important;
+}
+
+.card-hoverable:hover .cardImageContainer {
+    transform: scale(1.025);
+}
+
+.card-hoverable .itemSelectionPanel {
+    transition: transform 0.125s;
+}
+
+.card-hoverable:hover .cardScalable,
+.card-hoverable:hover .itemSelectionPanel {
+    transform: scale(1.02);
+}
+
+.card-hoverable .cardScalable:active {
+    transition: transform 0.075s;
+    transform: scale(1);
+}
+
+.cardScalable:has(.cardOverlayButton-hover:hover) > .cardImageContainer {
+    transform: scale(1);
+}
+
+/* Card Active/Pressed — primary tint overlay */
+.card-hoverable:active .cardScalable,
+.card-hoverable:active .visualCardBox {
+    background-color: var(--std-sys-color-surface-container-high);
+    box-shadow: var(--std-elevation-1);
+}
+
+.cardOverlayContainer {
+    transition: 0.5s;
+    background: rgba(208, 188, 255, 0.05);
+}
+
+.cardOverlayContainer:after {
+    content: var(--cardHoverEffect);
+    transition: 0.65s;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transform: translateY(-100%) translateX(0);
+    background: var(--hoverGradientV);
+}
+
+.card-hoverable:hover .cardOverlayContainer:after {
+    transform: translateY(100%) translateX(0);
+}
+
+.backdropCard.card-hoverable .cardOverlayContainer:after,
+.overflowBackdropCard.card-hoverable .cardOverlayContainer:after {
+    transform: translateY(0) translateX(-100%);
+    background: var(--hoverGradientH);
+}
+
+.backdropCard.card-hoverable:hover .cardOverlayContainer:after,
+.overflowBackdropCard.card-hoverable:hover .cardOverlayContainer:after {
+    transform: translateY(0) translateX(100%);
+}
+
+.cardBox:not(.visualCardBox) .cardPadder {
+    background-color: var(--std-sys-color-surface);
+    box-shadow: none;
+}
+
+.cardOverlayContainer > .cardOverlayFab-primary {
+    margin-left: unset;
+    margin-top: unset;
+    top: unset;
+    left: calc(var(--overlayPlayButtonPosition) - 1.5em);
+    bottom: calc(var(--overlayPlayButtonPosition) - 1.5em);
+}
+
+.cardOverlayContainer > .cardOverlayFab-primary,
+.listItemImageButton,
+.layout-mobile .cardOverlayButton-br:not([data-action="menu"]) > .cardOverlayButtonIcon {
+    background-color: var(--btnMiniPlayColor) !important;
+    color: var(--std-sys-color-on-primary) !important;
+    border: var(--std-border-width) solid var(--btnMiniPlayBorderColor);
+    font-size: 75%;
+    z-index: 2;
+}
+
+.cardOverlayContainer > .cardOverlayFab-primary:hover,
+.listItemImageButton:hover {
+    color: var(--std-sys-color-on-primary);
+}
+
+[dir="ltr"] .layout-desktop .cardOverlayButton-br,
+.layout-desktop .cardOverlayButton-br {
+    bottom: 1.2em;
+    right: 0.7em;
+    z-index: 1;
+    font-size: 0.8em;
+}
+
+.layout-desktop .cardOverlayButton-br > button {
+    color: var(--std-sys-color-on-surface);
+    display: var(--extraCardButtonsVisibility);
+    text-shadow: var(--iconShadow);
+}
+
+.cardOverlayButton-br .cardOverlayButton-hover[data-action="menu"],
+.layout-desktop .listItemButton[data-action="menu"] {
+    display: var(--menuButtonVisibility);
+}
+
+.layout-mobile .cardOverlayButton {
+    padding: 1em;
+    font-size: 60%;
+}
+
+.layout-mobile .cardOverlayButton-br,
+[dir="ltr"] .layout-mobile .cardOverlayButton-br {
+    display: var(--miniOverlayButtonVisibility);
+}
+
+.layout-mobile .portraitCard .cardOverlayButton-br:not([data-action="menu"]),
+.layout-mobile .backdropCard .cardOverlayButton-br:not([data-action="menu"]) {
+    display: none;
+}
+
+.layout-mobile .cardOverlayButton-br[data-action="menu"] > .cardOverlayButtonIcon {
+    background-color: transparent !important;
+    border: none;
+    text-shadow: var(--iconShadow);
+    color: var(--std-sys-color-on-surface);
+}
+
+.cardOverlayContainer:has(> button:hover) {
+    backdrop-filter: var(--blurDefault);
+}
+
+.listViewUserDataButtons {
+    font-size: small;
+}
+
+.layout-mobile .listViewUserDataButtons {
+    flex-direction: column;
+    font-size: x-small;
+}
+
+
+/* ===========================================
+   SECTION 5 — Episode Grid
+   =========================================== */
+
+@supports (display: revert) {
+    .layout-desktop .vertical-list:has(.listItem-largeImage) {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(min(var(--minEpisodeCardWidth), 100%), 1fr));
+        gap: var(--itemColumnGap);
+    }
+
+    .layout-desktop .listItem-largeImage {
+        display: grid;
+        margin-bottom: 0 !important;
+    }
+
+    .layout-desktop .listItem-largeImage > .listItem-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr 2em;
+        order: 1;
+        height: 100%;
+        align-items: start;
+    }
+
+    .layout-desktop .listItem-largeImage > .listItem-bottomoverview {
+        order: 2;
+    }
+
+    .layout-desktop .listItem-largeImage .listItemImage-large {
+        order: 1;
+        grid-column: 1 / -1;
+        height: max-content;
+        min-height: 15em;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        box-sizing: border-box;
+    }
+
+    .layout-desktop .listItem-largeImage .listItemBody {
+        order: 2;
+        grid-column: 1 / 3;
+        padding: 1em 0.125em;
+    }
+
+    .layout-desktop .listItem-largeImage .listViewUserDataButtons {
+        flex-direction: column;
+        font-size: small;
+        order: 2;
+        grid-column: 3;
+        align-self: center;
+    }
+}
+
+
+/* ===========================================
+   SECTION 6 — Card Size Grid (Responsive)
+   ===========================================
+   Same responsive breakpoints as ElegantFin.
+   =========================================== */
+
+.portraitCard {
+    min-width: 5em;
+}
+
+.bannerCard {
+    --cardCount: 2;
+}
+
+/* 16 posters, 12 thumbs */
+@media (min-width: 300em) {
+    .portraitCard,
+    .squareCard {
+        --cardCount: 16;
+    }
+
+    .overflowPortraitCard,
+    .overflowSquareCard {
+        --cardCount: 15;
+    }
+
+    .squareCard:has(.cardFooter) {
+        --cardCount: 12;
+    }
+
+    .backdropCard {
+        --cardCount: 12;
+    }
+
+    .overflowBackdropCard {
+        --cardCount: 11;
+    }
+}
+
+/* 15 posters, 11 thumbs */
+@media (max-width: 300em) {
+    .portraitCard,
+    .squareCard {
+        --cardCount: 15;
+    }
+
+    .overflowPortraitCard,
+    .overflowSquareCard {
+        --cardCount: 14;
+    }
+
+    .squareCard:has(.cardFooter) {
+        --cardCount: 11;
+    }
+
+    .backdropCard {
+        --cardCount: 11;
+    }
+
+    .overflowBackdropCard {
+        --cardCount: 10;
+    }
+}
+
+/* 14 posters, 10 thumbs */
+@media (max-width: 270em) {
+    .portraitCard,
+    .squareCard {
+        --cardCount: 14;
+    }
+
+    .overflowPortraitCard,
+    .overflowSquareCard {
+        --cardCount: 13;
+    }
+
+    .squareCard:has(.cardFooter) {
+        --cardCount: 10;
+    }
+
+    .backdropCard {
+        --cardCount: 10;
+    }
+
+    .overflowBackdropCard {
+        --cardCount: 9;
+    }
+}
+
+/* 13 posters, 10 thumbs */
+@media (max-width: 240em) {
+    .portraitCard,
+    .squareCard {
+        --cardCount: 13;
+    }
+
+    .overflowPortraitCard,
+    .overflowSquareCard {
+        --cardCount: 12;
+    }
+
+    .squareCard:has(.cardFooter) {
+        --cardCount: 10;
+    }
+
+    .backdropCard {
+        --cardCount: 10;
+    }
+
+    .overflowBackdropCard {
+        --cardCount: 9;
+    }
+}
+
+/* 12 posters, 9 thumbs, 2160p */
+@media (max-width: 220em) {
+    .portraitCard,
+    .squareCard {
+        --cardCount: 12;
+    }
+
+    .overflowPortraitCard,
+    .overflowSquareCard {
+        --cardCount: 11;
+    }
+
+    .squareCard:has(.cardFooter) {
+        --cardCount: 9;
+    }
+
+    .backdropCard,
+    .overflowBackdropCard {
+        --cardCount: 7;
+    }
+}
+
+/* 11 posters, 9 thumbs */
+@media (max-width: 200em) {
+    .portraitCard,
+    .squareCard {
+        --cardCount: 11;
+    }
+
+    .overflowPortraitCard,
+    .overflowSquareCard {
+        --cardCount: 10;
+    }
+
+    .squareCard:has(.cardFooter) {
+        --cardCount: 9;
+    }
+}
+
+/* 10 posters, 8 thumbs, 1440p */
+@media (max-width: 170em) {
+    .portraitCard,
+    .squareCard {
+        --cardCount: 10;
+    }
+
+    .overflowPortraitCard,
+    .overflowSquareCard {
+        --cardCount: 9;
+    }
+
+    .squareCard:has(.cardFooter) {
+        --cardCount: 9;
+    }
+
+    .backdropCard,
+    .overflowBackdropCard {
+        --cardCount: 6;
+    }
+}
+
+/* 9 posters, 7 thumbs */
+@media (max-width: 140em) {
+    .portraitCard,
+    .squareCard {
+        --cardCount: 9;
+    }
+
+    .overflowPortraitCard,
+    .overflowSquareCard {
+        --cardCount: 8;
+    }
+
+    .squareCard:has(.cardFooter) {
+        --cardCount: 7;
+    }
+
+    .backdropCard,
+    .overflowBackdropCard {
+        --cardCount: 5;
+    }
+}
+
+/* 8 posters, 7 thumbs, 1080p */
+@media (max-width: 120em) {
+    .portraitCard,
+    .squareCard {
+        --cardCount: 8;
+    }
+
+    .overflowPortraitCard,
+    .overflowSquareCard {
+        --cardCount: 7;
+    }
+
+    .squareCard:has(.cardFooter) {
+        --cardCount: 6;
+    }
+
+    .backdropCard,
+    .layout-tv .portraitCard,
+    .layout-tv .squareCard,
+    .layout-tv .overflowPortraitCard,
+    .layout-tv .overflowSquareCard,
+    .overflowBackdropCard {
+        --cardCount: 5;
+    }
+
+    .layout-tv .backdropCard,
+    .layout-tv .overflowBackdropCard {
+        --cardCount: 3;
+    }
+}
+
+/* 7 posters, 6 thumbs */
+@media (max-width: 100em) {
+    .portraitCard,
+    .squareCard,
+    .overflowPortraitCard,
+    .overflowSquareCard {
+        --cardCount: 7;
+    }
+
+    .squareCard:has(.cardFooter) {
+        --cardCount: 6;
+    }
+
+    .backdropCard,
+    .overflowBackdropCard {
+        --cardCount: 4;
+    }
+}
+
+/* 6 posters, 5 thumbs */
+@media (max-width: 80em) {
+    .portraitCard,
+    .squareCard,
+    .overflowPortraitCard,
+    .overflowSquareCard {
+        --cardCount: 6;
+    }
+
+    .squareCard:has(.cardFooter) {
+        --cardCount: 5;
+    }
+
+    .overflowBackdropCard,
+    .backdropCard {
+        --cardCount: 4;
+    }
+}
+
+/* 5 posters, 4 thumbs */
+@media (max-width: 62em) {
+    .portraitCard,
+    .squareCard,
+    .overflowPortraitCard,
+    .overflowSquareCard {
+        --cardCount: 5;
+    }
+
+    .squareCard:has(.cardFooter) {
+        --cardCount: 4;
+    }
+
+    .backdropCard,
+    .overflowBackdropCard {
+        --cardCount: 4;
+    }
+}
+
+/* 4 posters, 3 thumbs */
+@media (max-width: 48.125em) {
+    .portraitCard,
+    .squareCard,
+    .overflowPortraitCard,
+    .overflowSquareCard {
+        --cardCount: 4;
+    }
+
+    .squareCard:has(.cardFooter) {
+        --cardCount: 3;
+    }
+
+    .backdropCard,
+    .overflowBackdropCard {
+        --cardCount: 3;
+    }
+}
+
+/* 3 posters, 2 thumbs */
+@media (max-width: 30em) {
+    .portraitCard,
+    .squareCard,
+    .overflowPortraitCard,
+    .overflowSquareCard,
+    .layout-mobile .portraitCard,
+    .layout-mobile .squareCard,
+    .layout-mobile .overflowPortraitCard,
+    .layout-mobile .overflowSquareCard {
+        --cardCount: 3;
+    }
+
+    .squareCard:has(.cardFooter) {
+        --cardCount: 2;
+    }
+
+    .backdropCard,
+    .overflowBackdropCard {
+        --cardCount: 2;
+    }
+}
+
+
+/* ===========================================
+   SECTION 7 — Card Sizing
+   =========================================== */
+
+.cardBox {
+    margin-top: 0;
+}
+
+.card {
+    --padding: 0.375em;
+    --effectiveWidth: calc(((100vw - (var(--padding) * 2)) - (var(--sidePadding) * 2)));
+    --cardWidth: calc(var(--effectiveWidth) / var(--cardCount) - var(--itemColumnGap));
+    width: var(--cardWidth) !important;
+    padding: var(--padding);
+    transition: width 0.5s;
+    box-sizing: content-box;
+}
+
+@supports (aspect-ratio: 1 / 1) {
+    .card {
+        box-sizing: border-box;
+    }
+}
+
+.layout-mobile .card {
+    --padding: 1px;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+}
+
+@media (orientation: landscape) and (max-height: 40em) {
+    .layout-mobile .card {
+        --effectiveWidth: calc((65vw - (var(--sidePadding) * 2)));
+    }
+}
+
+#homeTab .overflowBackdropCard[data-positionticks],
+.nextUpItems > .card,
+#resumableItems > .card {
+    width: calc(var(--cardWidth) * var(--resumeCardScale)) !important;
+}
+
+.card .cardTextCentered {
+    text-shadow: var(--shadow);
+}
+
+
+/* ===========================================
+   SECTION 8 — Detail Page
+   =========================================== */
+
+.detailPageWrapperContainer {
+    padding-top: unset;
+    margin-top: unset;
+}
+
+.layout-desktop .detailPageWrapperContainer {
+    min-height: 46vh;
+    background: linear-gradient(180deg, transparent, 17vh, rgba(15, 13, 19, 0.85) 50vh);
+}
+
+.layout-tv .detailPageWrapperContainer {
+    padding-left: 30vw;
+    min-height: 46vh;
+    background: linear-gradient(0deg, rgba(15, 13, 19, 0.85) 70%, 85%, transparent);
+}
+
+.detailPagePrimaryContainer {
+    align-content: space-between;
+    align-items: stretch;
+    justify-content: end;
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+}
+
+.layout-mobile .detailPagePrimaryContainer.detailRibbon,
+.layout-mobile .detailPagePrimaryContainer>.detailRibbon {
+    padding: 0 var(--sidePadding);
+}
+
+.layout-desktop .detailPagePrimaryContainer {
+    background: transparent;
+}
+
+.layout-desktop .detailPageSecondaryContainer {
+    background-color: transparent;
+}
+
+.detailPagePrimaryContainer>.detailPagePrimaryContent,
+[dir=ltr] .detailPagePrimaryContainer>.detailRibbon,
+[dir=ltr] .detailPagePrimaryContainer.detailRibbon {
+    padding-left: var(--sidePadding);
+}
+
+.layout-mobile .detailPagePrimaryContent {
+    padding-left: var(--sidePadding) !important;
+    padding-right: var(--sidePadding) !important;
+}
+
+.layout-desktop [dir="ltr"] .detailRibbon,
+.layout-tv [dir="ltr"] .detailRibbon {
+    flex-direction: column;
+}
+
+.detailPagePrimaryContainer > .detailPagePrimaryContent {
+    padding-top: 0;
+}
+
+.detailPageSecondaryContainer {
+    padding-top: 0 !important;
+}
+
+
+/* ===========================================
+   SECTION 9 — App Bar (Solid, No Blur)
+   ===========================================
+   Surface Tint variant uses solid background
+   instead of backdrop-filter blur. Cleaner,
+   more predictable rendering.
+   =========================================== */
+
+.skinHeader-blurred:not(.osdHeader):not(.semiTransparent) {
+    backdrop-filter: none;
+    background-color: var(--std-sys-color-surface-container);
+    background: var(--appBarColor, var(--std-sys-color-surface-container));
+    border: var(--appBarBorder);
+    border-width: 0 0 var(--std-border-width) 0;
+}
+
+.skinHeader-blurred:not(.osdHeader):not(.semiTransparent)::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    backdrop-filter: none;
+    z-index: -1;
+}
+
+.layout-mobile .skinHeader-blurred:not(.osdHeader),
+.layout-mobile .withSectionTabs .headerTop {
+    padding: 0;
+}
+
+/* Transparent header — main media page */
+.skinHeader-withBackground.semiTransparent {
+    --headerBackground: none;
+    backdrop-filter: none;
+    background-color: transparent;
+    border: none;
+}
+
+.skinHeader.headroom:not(.osdHeader, .noHomeButtonHeader):has(.pageTitle:empty)::after,
+.skinHeader.headroom:not(.osdHeader, .noHomeButtonHeader):has(.pageTitle:empty) {
+    --headerBackground: none;
+    backdrop-filter: none;
+    background-color: transparent;
+    border: none;
+}
+
+.skinHeader-withBackground.semiTransparent .headerButton:not(:hover),
+.skinHeader.headroom:not(.osdHeader, .noHomeButtonHeader):has(.pageTitle:empty) .headerButton:not(:hover) {
+    text-shadow: var(--iconShadow);
+    color: #fff;
+}
+
+.headerTop {
+    -webkit-align-items: center;
+    align-items: center;
+    padding: 0;
+    height: var(--appBarHeight);
+}
+
+.osdHeader .headerTop {
+    max-height: var(--appBarHeight);
+}
+
+.layout-desktop .headerTop {
+    padding: 0 1em;
+}
+
+.layout-tv .headerTop {
+    padding: 0 0.5em;
+}
+
+.headroom--unpinned {
+    -webkit-transform: translateY(calc(-1 * var(--appBarHeight) - var(--std-border-width)));
+    transform: translateY(calc(-1 * var(--appBarHeight) - var(--std-border-width)));
+}
+
+
+/* ===========================================
+   SECTION 10 — Sidebar / Navigation Drawer
+   ===========================================
+   Surface Tint uses surface-container-low
+   background. Active item uses secondary-container.
+   =========================================== */
+
+.mainDrawer,
+.drawer-open {
+    background-color: var(--std-sys-color-surface-container-low);
+    border-right: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+    backdrop-filter: none;
+}
+
+.mainDrawer-scrollContainer {
+    padding-bottom: 5vh;
+}
+
+.mainDrawer-scrollContainer > div:first-child {
+    margin-bottom: 1em;
+}
+
+.noHomeButtonHeader .emby-tab-button[data-index="1"]:before {
+    content: "favorite";
+}
+
+.noHomeButtonHeader .emby-tab-button[data-index="0"]:before {
+    content: "home";
+}
+
+.noHomeButtonHeader .emby-tab-button:before {
+    --fill: 0;
+    font-family:
+        var(--iconPack),
+        Material Icons;
+    font-feature-settings: "liga";
+    font-size: 1.2em;
+    font-variation-settings:
+        "FILL" var(--fill),
+        "wght" var(--wght),
+        "GRAD" var(--grad),
+        "opsz" var(--opsz);
+    transition: font-variation-settings 0.25s;
+}
+
+.layout-tv .sectionTabs .emby-tabs.smoothScrollX {
+    overflow: visible !important;
+}
+
+
+/* ===========================================
+   SECTION 11 — Section Tabs
+   =========================================== */
+
+.sectionTabs {
+    display: inline-grid;
+    height: var(--appBarHeight);
+    padding-bottom: var(--appBarTabsPadding, 1.5em);
+}
+
+.layout-mobile .sectionTabs {
+    align-content: center;
+}
+
+.sectionTabs .emby-tab-button {
+    display: inline-flex;
+    margin: 0.25em 0.5em;
+    padding: 0 1.25em;
+    height: 2.5em;
+    color: var(--std-sys-color-on-surface);
+    font-weight: 400;
+    border-radius: var(--largeRadius);
+    background-color: var(--std-sys-color-surface-container);
+    transition: background-color 200ms ease, color 200ms ease;
+}
+
+/* Active tab — secondary-container fill (Surface Tint) */
+.sectionTabs .emby-tab-button-active {
+    margin: 0.25em 0.5em;
+    color: var(--std-sys-color-on-secondary-container);
+    background-color: var(--std-sys-color-secondary-container);
+}
+
+.libraryPage:not(.noSecondaryNavPage) {
+    padding-top: calc(var(--appBarHeight) * 2 + 0.5em) !important;
+}
+
+@media (min-width: 75em) {
+    .sectionTabs {
+        -webkit-align-items: center;
+        align-items: center;
+        -webkit-align-self: center;
+        align-self: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        margin-top: calc(-1 * var(--appBarHeight));
+        position: relative;
+        width: auto;
+    }
+
+    .libraryPage:not(.noSecondaryNavPage) {
+        padding-top: calc(var(--appBarHeight) + 0.5em) !important;
+    }
+
+    .headroom--unpinned {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+
+@media (min-width: 100em) {
+    .layout-tv .libraryPage:not(.noSecondaryNavPage) {
+        padding-top: calc(var(--appBarHeight) + 0.5em) !important;
+    }
+}
+
+@media (max-width: 100em) {
+    .sectionTabs {
+        font-size: 100%;
+    }
+
+    .layout-tv .sectionTabs {
+        margin-top: unset;
+    }
+
+    .layout-tv .libraryPage:not(.noSecondaryNavPage) {
+        padding-top: calc(var(--appBarHeight) * 2 + 0.5em) !important;
+    }
+}
+
+@media (max-width: 75em) {
+    .layout-mobile .sectionTabs .emby-tab-button:first-child {
+        margin-left: var(--sidePadding);
+    }
+
+    .layout-mobile .sectionTabs .emby-tab-button:last-child {
+        margin-right: var(--sidePadding);
+    }
+}
+
+
+/* ===========================================
+   SECTION 12 — Buttons
+   ===========================================
+   Surface Tint variant: buttons use tint-based
+   hover states — slight opacity/background shift
+   instead of shadow depth.
+   =========================================== */
+
+.btnHeaderSave.button-flat {
+    color: var(--std-sys-color-primary) !important;
+    gap: 0.3em;
+    border-radius: var(--smallRadius);
+}
+
+.button-flat:hover {
+    color: unset;
+}
+
+.button-flat:active {
+    color: unset;
+    background-color: rgba(208, 188, 255, 0.12);
+}
+
+.playstatebutton-icon-played {
+    color: rgb(34, 197, 94);
+}
+
+.videoOsdBottom.videoOsdBottom-maincontrols .btnPause {
+    font-size: 2em;
+}
+
+.osdControls {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+/* Standard raised buttons */
+.emby-button.block,
+.button-alt,
+.raised,
+.raised:focus,
+.manageRecordingButton,
+.dashboardActionsContainer > .emby-button {
+    color: var(--std-sys-color-on-surface);
+    border-radius: var(--smallRadius);
+    background: var(--std-sys-color-surface-container);
+    border: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+    transition: all 0.125s;
+}
+
+.editItemMetadataForm > .metadataFormFields div:has(.formDialogFooterItem) {
+    display: flex;
+    justify-content: center;
+}
+
+.btnBrowse > .folder {
+    margin-inline-end: 0.5em;
+}
+
+/* FAB — Surface Container with tint border */
+.fab {
+    color: var(--std-sys-color-on-surface);
+    background: var(--std-sys-color-surface-container);
+    border: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+}
+
+.fab:focus {
+    background: var(--std-sys-color-surface-container-high) !important;
+    box-shadow: var(--std-elevation-2);
+}
+
+.raised:active,
+.fab:active,
+.emby-button:active {
+    box-shadow: var(--std-elevation-1) !important;
+    transform: scale(0.98);
+}
+
+/* Detail buttons */
+.detailButton {
+    border: var(--std-border-width) solid var(--std-sys-color-outline);
+    padding: 0.5em 0.5em !important;
+}
+
+.cardScalable .material-icons.check:before {
+    transform: scale(1.25);
+}
+
+.detailButton:not(.btnPlay) {
+    color: var(--std-sys-color-on-surface);
+    backdrop-filter: none;
+    border-color: transparent;
+    margin: 0.5em !important;
+    border-radius: 50%;
+    padding: 0.6em !important;
+    background: transparent;
+}
+
+.layout-desktop .detailButton:not(.btnPlay):hover {
+    color: var(--std-sys-color-on-primary);
+    background: var(--std-sys-color-primary);
+}
+
+.detailButton:active {
+    color: var(--std-sys-color-on-primary);
+    background: var(--std-sys-color-primary);
+}
+
+/* Play button */
+.btnPlay.detailButton {
+    background-color: var(--std-sys-color-primary);
+    color: var(--std-sys-color-on-primary);
+    border-radius: 3em;
+    border-color: var(--std-sys-color-primary);
+    height: 3em;
+    min-width: 10em;
+    margin-right: 0.5em !important;
+    flex-direction: row;
+}
+
+.mainDetailButtons > .btnPlay:after {
+    content: attr(title);
+    padding-right: 1ch;
+}
+
+.btnPlay > .detailButton-content::after {
+    padding: 0 1ch;
+    place-content: center;
+}
+
+.btnPlay > .detailButton-content {
+    align-items: unset;
+    display: flex;
+    flex-direction: unset;
+    align-content: unset;
+    justify-content: flex-start;
+}
+
+.mainDetailButtons:has(.detailButton[data-type="Book"]) .btnPlay[title="Play"]:after {
+    content: "Read";
+}
+
+.mainDetailButtons:has(.detailButton[data-type="Book"]) .btnPlay .material-icons.play_arrow:before {
+    content: "book";
+    padding-inline-end: 1ch;
+}
+
+.mainDetailButtons {
+    justify-content: center;
+    margin: 0;
+}
+
+.layout-mobile [dir="ltr"] .mainDetailButtons {
+    flex-wrap: wrap;
+    padding: 0 1.25em;
+}
+
+@media (min-width: 100em) {
+    .mainDetailButtons {
+        font-size: unset;
+        margin: 0;
+    }
+}
+
+.localnav > .emby-button {
+    background: var(--std-sys-color-surface-container) !important;
+    color: var(--std-sys-color-on-surface);
+    padding: 0.8em 0.8em;
+}
+
+div[data-role="controlgroup"] a.ui-btn-active {
+    background: var(--std-sys-color-surface-container) !important;
+    color: var(--std-sys-color-on-surface) !important;
+}
+
+.guide-date-tab-button.emby-tab-button-active,
+.guide-date-tab-button:focus {
+    color: var(--std-sys-color-on-surface);
+}
+
+/* Delete button */
+#btnDeleteImage,
+.button-delete,
+.btnRevoke,
+#btnShutdown {
+    background: var(--btnDeleteColor) !important;
+    border: solid var(--btnDeleteBorderColor) var(--std-border-width);
+    color: #fff !important;
+}
+
+/* Submit button */
+.button-submit,
+.upNextContainer .btnStartNow,
+.MuiButton-colorPrimary {
+    background: var(--btnSubmitColor) !important;
+    border: solid var(--btnSubmitBorderColor) var(--std-border-width) !important;
+    color: #fff !important;
+}
+
+.userPreferencesPage .button-submit {
+    position: sticky !important;
+    bottom: calc(1em + max(env(safe-area-inset-bottom), var(--safe-area-inset-bottom, 1px)));
+    box-shadow: 0 0.75em 2em 2em var(--std-sys-color-background);
+    z-index: 2 !important;
+}
+
+
+/* ===========================================
+   SECTION 13 — Dialogs (Surface Tint)
+   ===========================================
+   Surface Tint dialogs: surface-container-high
+   background + border, NO shadow.
+   =========================================== */
+
+.dialog {
+    backdrop-filter: none;
+    background-color: var(--std-sys-color-surface-container-high);
+    min-width: 11em;
+    border: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+    box-shadow: none;
+}
+
+[dir="ltr"] .emby-collapsible-button {
+    padding-left: 1em;
+}
+
+.dialog:not(.dialog-fullscreen) {
+    border-radius: var(--largeRadius) !important;
+    border: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+}
+
+@media (max-width: 80em), (max-height: 45em) {
+    .dialog.dialog-fixedSize,
+    .dialog.dialog-fullscreen-lowres {
+        border-radius: unset !important;
+        border: none;
+    }
+}
+
+.dialogBackdropOpened {
+    opacity: 0.66;
+}
+
+.subtitleEditor-dropZone,
+.imageEditor-dropZone,
+.lyricsEditor-dropZone {
+    border-radius: var(--largeRadius);
+}
+
+.formDialogHeaderTitle {
+    margin-inline-start: 0 !important;
+    margin-inline-end: 0 !important;
+    text-align: center;
+    padding: 0 0.5em !important;
+}
+
+.formDialogFooter:not(.formDialogFooter-clear.formDialogFooter-flex) > .formDialogFooterItem {
+    -webkit-flex-basis: 6em;
+    flex-basis: 6em;
+}
+
+.collapseContent {
+    background-color: unset !important;
+    backdrop-filter: unset !important;
+}
+
+.collapseContent,
+.formDialogFooter:not(.formDialogFooter-clear),
+.formDialogHeader:not(.formDialogHeader-clear) {
+    background-color: var(--std-sys-color-surface-container);
+    backdrop-filter: none;
+    color: var(--std-sys-color-on-surface);
+}
+
+
+/* ===========================================
+   SECTION 14 — Forms & Inputs
+   =========================================== */
+
+.emby-select-withcolor,
+.emby-select,
+.emby-input,
+.emby-textarea {
+    background-color: var(--std-sys-color-surface-container);
+    border: var(--std-border-width) solid var(--std-sys-color-outline);
+    border-radius: var(--smallRadius);
+    padding: 0.5em !important;
+    color: var(--std-sys-color-on-surface);
+    transition: border-color 200ms ease;
+}
+
+.inputLabelFocused,
+.selectLabelFocused,
+.textareaLabelFocused {
+    color: var(--std-sys-color-on-surface);
+}
+
+.emby-select-withcolor:focus,
+.emby-input:focus,
+.emby-textarea:focus {
+    border-color: var(--std-sys-color-primary) !important;
+    outline: none !important;
+}
+
+@supports (display: revert) {
+    .emby-select-withcolor:focus,
+    .emby-input:focus,
+    .emby-textarea:focus {
+        border-color: var(--std-sys-color-primary) !important;
+        outline: thin solid var(--std-sys-color-primary) !important;
+        background-color: var(--std-sys-color-surface-container);
+    }
+}
+
+.emby-select-withcolor > option {
+    color: inherit;
+    background-color: var(--std-sys-color-surface-container);
+}
+
+.inputContainer .emby-input-iconbutton {
+    color: var(--std-sys-color-on-surface-variant);
+    margin-left: -2.5em;
+    background-color: transparent !important;
+}
+
+.searchfields-txtSearch {
+    padding: 0.75em 1.5em !important;
+    border-radius: 4em;
+}
+
+.searchfields-icon {
+    padding: 0.25em;
+    margin-left: -1.75em;
+    margin-bottom: 0;
+    border-radius: var(--largeRadius);
+    color: var(--std-sys-color-on-surface-variant);
+}
+
+.searchfields-icon:active,
+.inputContainer .emby-input-iconbutton:active {
+    color: var(--std-sys-color-on-surface);
+}
+
+.searchFields > .searchFieldsInner {
+    flex-direction: row-reverse;
+}
+
+.selectLabel {
+    max-height: 2em;
+    color: var(--std-sys-color-on-surface);
+}
+
+.inputLabelUnfocused {
+    color: var(--std-sys-color-on-surface-variant);
+}
+
+.inputLabelFocused {
+    color: var(--std-sys-color-on-surface);
+}
+
+.button-link {
+    color: var(--std-sys-color-on-surface-variant);
+}
+
+.button-link:hover {
+    color: unset !important;
+    text-decoration: none;
+}
+
+.button-link:active {
+    color: var(--std-sys-color-on-surface) !important;
+    text-decoration: none;
+}
+
+.emby-textarea {
+    font-family: consolas, monospace;
+}
+
+.customCssContainer textarea {
+    max-height: 40vh;
+    overflow-y: auto !important;
+}
+
+
+/* ===========================================
+   SECTION 15 — Selection & Checkbox
+   =========================================== */
+
+.selectionCommandsPanel {
+    background: var(--std-sys-color-surface-container);
+    border-bottom: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+    backdrop-filter: none;
+    height: 3.5em;
+    padding-top: max(env(safe-area-inset-top), var(--safe-area-inset-top));
+}
+
+.selectionCommandsPanel > h1 {
+    font-size: large;
+}
+
+.itemSelectionPanel {
+    border: unset;
+    background-color: transparent;
+}
+
+.emby-checkbox:checked + span + .checkboxOutline {
+    border-radius: var(--smallerRadius) !important;
+    background: transparent;
+    border-color: var(--std-sys-color-primary);
+    border-style: solid;
+    border-width: var(--std-border-width-thick);
+    outline: none;
+}
+
+.emby-checkbox:checked + span + .multiSelectCheckboxOutline {
+    box-shadow: inset 0em 7em 10em 20px var(--multiSelectOverlayColor);
+}
+
+@supports (display: revert) {
+    .emby-checkbox:checked + span + .checkboxOutline {
+        outline: solid var(--std-border-width) var(--std-sys-color-on-surface);
+    }
+}
+
+.checkboxOutline {
+    top: unset;
+    height: 1.3em;
+    width: 1.3em;
+    border-radius: var(--smallerRadius);
+}
+
+.itemSelectionPanel .material-icons.check:before {
+    font-size: 4em;
+    color: var(--std-sys-color-on-surface);
+    padding: 0.25em;
+}
+
+.cardText-first + .itemSelectionPanel > .checkboxContainer {
+    height: calc(100% - 1.75em);
+}
+
+.overflowBackdropCard .cardText-first + .itemSelectionPanel > .checkboxContainer {
+    height: 100%;
+}
+
+.checkboxContainer .emby-checkbox:checked + span + .checkboxOutline.multiSelectCheckboxOutline {
+    border-radius: var(--largeRadius) !important;
+}
+
+#castCollapsible .checkboxContainer .emby-checkbox:checked + span + .checkboxOutline.multiSelectCheckboxOutline,
+#guestCastContent .checkboxContainer .emby-checkbox:checked + span + .checkboxOutline.multiSelectCheckboxOutline {
+    border-radius: 50% !important;
+}
+
+.cardPadder {
+    text-align: center;
+}
+
+#castCollapsible .cardPadder .cardImageIcon,
+#guestCastContent .cardPadder .cardImageIcon {
+    display: none;
+}
+
+.cardText-secondary + .itemSelectionPanel > .checkboxContainer,
+.cardText.cardTextCentered:not(.cardText-secondary, .cardText-first) + .itemSelectionPanel > .checkboxContainer {
+    height: calc(100% - 3em);
+}
+
+.cardFooter + .itemSelectionPanel > .checkboxContainer,
+.cardScalable + .itemSelectionPanel > .checkboxContainer {
+    height: 100%;
+}
+
+.checkboxOutline.multiSelectCheckboxOutline {
+    border-radius: var(--largeRadius);
+    border-width: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.checkboxOutline:not(.multiSelectCheckboxOutline) .checkboxIcon {
+    font-size: 0.9em;
+    font-weight: 900;
+}
+
+.checkboxOutline:not(.multiSelectCheckboxOutline) {
+    border: solid var(--std-sys-color-outline) var(--std-border-width);
+    background-color: var(--std-sys-color-surface-container);
+    transition: all 0.125s;
+}
+
+.emby-checkbox:checked + span + .checkboxOutline:not(.multiSelectCheckboxOutline) {
+    background: var(--checkboxCheckedBgColor);
+    border: var(--std-border-width) solid var(--std-sys-color-primary);
+}
+
+.emby-checkbox:focus:not(:checked) + span + .checkboxOutline {
+    border-color: var(--std-sys-color-primary) !important;
+    outline: none;
+}
+
+.emby-checkbox:focus + span + .checkboxOutline {
+    border-color: var(--std-sys-color-primary) !important;
+    outline: none;
+}
+
+@supports (display: revert) {
+    .emby-checkbox:focus + span + .checkboxOutline {
+        border-color: var(--std-sys-color-on-surface) !important;
+        outline: var(--std-border-width) solid var(--std-sys-color-primary);
+    }
+}
+
+
+/* ===========================================
+   SECTION 16 — Card Indicators
+   =========================================== */
+
+.cardIndicators {
+    -webkit-align-items: center;
+    align-items: center;
+    top: 0.5em;
+}
+
+[dir="ltr"] .cardIndicators {
+    right: 0.5em;
+}
+
+.layout-mobile .cardIndicators {
+    top: 0.45em;
+    right: 0.5em;
+}
+
+.indicator {
+    border: solid var(--std-sys-color-outline) var(--std-border-width);
+    border-radius: 100em;
+}
+
+.playedIndicator {
+    background: rgb(34, 197, 94);
+    border: var(--std-border-width) solid var(--std-sys-color-outline);
+}
+
+.videoIndicator {
+    background: var(--std-sys-color-surface-container-highest);
+    padding: 0.5em;
+    transform: scale(0.85);
+    border: var(--std-border-width) solid var(--std-sys-color-outline);
+    font-size: 0.75em;
+}
+
+.videoIndicator:has(.photo_album),
+.videoIndicator:has(.folder) {
+    background: peru;
+}
+
+.videoIndicator:has(.photo) {
+    background: steelblue;
+}
+
+.videoIndicator:has(.videocam) {
+    background: indianred;
+}
+
+.defaultCardBackground,
+.cardScalable {
+    background: var(--std-sys-color-surface);
+}
+
+div[data-type="Book"] .play_arrow:before {
+    content: "book";
+    font-size: 85%;
+}
+
+div[data-type="Photo"] .play_arrow:before {
+    content: "photo";
+}
+
+div[data-type="PhotoAlbum"] .play_arrow:before {
+    content: "animated_images";
+}
+
+
+/* ===========================================
+   SECTION 17 — Card Footer
+   =========================================== */
+
+.innerCardFooter,
+.chapterCardImageContainer {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.innerCardFooter,
+.chapterThumbTextContainer {
+    background: var(--cardFooterGradient);
+    text-shadow: var(--iconShadow);
+    padding: 0em 2em 2em 2em;
+    align-content: end;
+    display: grid;
+    height: 100%;
+}
+
+.chapterCardImageContainer {
+    background-size: 135%;
+}
+
+.chapterCardImageContainer + .innerCardFooter {
+    padding: 0em 1em 1em 1em;
+    height: auto;
+}
+
+.layout-mobile .innerCardFooter {
+    padding: 5em 1em 1.25em 1em;
+}
+
+.layout-mobile .chapterCardImageContainer + .innerCardFooter {
+    padding: 0em 0.5em 0.5em 0.5em;
+}
+
+
+/* ===========================================
+   SECTION 18 — Detail Page Grid
+   =========================================== */
+
+#itemDetailPage .detailSection {
+    display: grid;
+    row-gap: 1em;
+    column-gap: 3em;
+    max-width: unset !important;
+    grid-template-columns: 1.3fr 0.7fr 1fr 1fr;
+    margin-bottom: 1.5em;
+}
+
+.tmdb-review-swipe-container {
+    max-width: 93vw;
+}
+
+.detailPageContent {
+    gap: 1em;
+}
+
+.trackSelections {
+    order: 3;
+    max-width: unset !important;
+    margin-top: 1em;
+    border: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+    border-radius: var(--smallRadius);
+    padding: 1em;
+    grid-column: 3 / 5;
+    background-color: var(--std-sys-color-surface-container);
+}
+
+.layout-mobile .trackSelections {
+    margin-top: 0;
+}
+
+.layout-tv .trackSelections {
+    order: 2;
+}
+
+.recordingFields {
+    order: 4;
+}
+
+.recordingButton {
+    gap: 1ch;
+}
+
+.detailsGroupItem,
+.trackSelections .selectContainer {
+    max-width: unset !important;
+    align-items: baseline;
+}
+
+.selectArrowContainer {
+    top: 0em;
+    opacity: 0.5;
+}
+
+.trackSelectionFieldContainer > .selectArrowContainer {
+    top: 0.5em;
+}
+
+.trackSelectionFieldContainer > label {
+    max-width: 2.75em;
+    background-repeat: no-repeat;
+    color: transparent;
+    transform: scale(0.9);
+}
+
+.selectVideoContainer.trackSelectionFieldContainer > label {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="%23cac4d0" viewBox="0 0 24 24"><g stroke-width="1.5"><path d="M2 12c0-4.7 0-7 1.5-8.5C4.9 2 7.3 2 12 2s7 0 8.5 1.5C22 4.9 22 7.3 22 12s0 7-1.5 8.5C19.1 22 16.7 22 12 22s-7 0-8.5-1.5C2 19.1 2 16.7 2 12Z"/><path stroke-linecap="round" d="M17 2.5v19M7 2.5v19M2.5 7H7m14.5 0H17M2.5 17H7m14.5 0H17M2 12h20"/></g></svg>');
+}
+
+.selectAudioContainer.trackSelectionFieldContainer > label {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="%23cac4d0" viewBox="0 0 24 24"><g stroke-width="1.5"><path d="M9 19a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM21 17a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM9 19V8M21 17V6"/><path stroke-linecap="round" d="m15.7 3.8-4 1.3c-1.3.4-2 .6-2.3 1.2C9 6.8 9 7.5 9 8.9V12l12-4v-.5c0-2.5 0-3.7-.8-4.3-.9-.6-2-.2-4.5.6Z"/></g></svg>');
+}
+
+.selectSubtitlesContainer.trackSelectionFieldContainer > label {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="%23cac4d0" viewBox="0 0 24 24"><g stroke-width="1.5"><path d="M2 12c0-3.8 0-5.7 1.2-6.8C4.3 4 6.2 4 10 4h4c3.8 0 5.7 0 6.8 1.2C22 6.3 22 8.2 22 12s0 5.7-1.2 6.8C19.7 20 17.8 20 14 20h-4c-3.8 0-5.7 0-6.8-1.2C2 17.7 2 15.8 2 12Z"/><path stroke-linecap="round" d="M10 16H6M14 13h4M14 16h-1.5M9.5 13h2M18 16h-1.5M6 13h1"/></g></svg>');
+}
+
+.selectSourceContainer.trackSelectionFieldContainer > label {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path fill="%23cac4d0" d="m15.4 4.05-.5.56.5-.56Zm3.95 3.57-.5.55.5-.55Zm2.3 2.53-.68.3.68-.3ZM3.17 20.83l.53-.53-.53.53Zm17.66 0-.53-.53.53.53Zm-6.83.42h-4v1.5h4v-1.5ZM2.75 14v-4h-1.5v4h1.5Zm18.5-.44V14h1.5v-.44h-1.5Zm-6.36-8.95 3.96 3.56 1-1.11L15.9 3.5l-1 1.11Zm7.86 8.95c0-1.69.02-2.75-.41-3.71l-1.37.6c.26.6.28 1.3.28 3.11h1.5Zm-3.9-5.39c1.35 1.22 1.85 1.7 2.12 2.29l1.37-.61c-.43-.96-1.23-1.66-2.49-2.8l-1 1.12Zm-8.82-5.42c1.58 0 2.18.01 2.71.22l.54-1.4c-.85-.33-1.78-.32-3.25-.32v1.5Zm5.86.75c-1.08-.98-1.76-1.6-2.61-1.93l-.54 1.4c.53.2.98.59 2.15 1.64l1-1.11ZM10 21.25c-1.9 0-3.26 0-4.29-.14-1-.13-1.58-.39-2-.81l-1.07 1.06c.75.75 1.7 1.08 2.87 1.24 1.15.15 2.63.15 4.49.15v-1.5ZM1.25 14c0 1.86 0 3.34.15 4.49a4.71 4.71 0 0 0 1.24 2.87L3.7 20.3c-.42-.43-.67-1-.81-2.01A36 36 0 0 1 2.75 14h-1.5ZM14 22.75c1.86 0 3.34 0 4.49-.15a4.71 4.71 0 0 0 2.87-1.24L20.3 20.3c-.43.42-1 .68-2.01.81-1.03.14-2.38.14-4.29.14v1.5ZM21.25 14c0 1.9 0 3.26-.14 4.29-.13 1-.39 1.58-.81 2l1.06 1.07a4.71 4.71 0 0 0 1.24-2.87c.15-1.15.15-2.63.15-4.49h-1.5Zm-18.5-4c0-1.9 0-3.26.14-4.29.14-1 .39-1.58.81-2L2.64 2.63A4.71 4.71 0 0 0 1.4 5.51c-.15 1.15-.15 2.63-.15 4.49h1.5Zm7.28-8.75c-1.87 0-3.36 0-4.51.15a4.72 4.72 0 0 0-2.88 1.24L3.7 3.7c.42-.42 1-.67 2.02-.81 1.03-.14 2.4-.14 4.31-.14v-1.5Z"/><path stroke="%23cac4d0" stroke-width="1.5" d="M13 2.5V5c0 2.36 0 3.54.73 4.27.73.73 1.91.73 4.27.73h4"/></svg>');
+}
+
+.detailSectionContent a:not(.overview-expand) {
+    text-align: start;
+}
+
+.layout-desktop .detailSectionContent {
+    display: grid;
+    align-content: end;
+    min-height: 16vh;
+}
+
+.detailSectionContent:has(.tagline.hide + .overview.hide) {
+    min-height: unset;
+}
+
+.itemDetailsGroup {
+    outline: none;
+    overflow: hidden;
+    margin-top: 1em;
+    border-radius: var(--smallRadius);
+    background-color: var(--std-sys-color-surface-container);
+    border: none;
+    box-shadow: inset 0 0 0 var(--std-border-width) var(--std-sys-color-outline-variant) !important;
+    order: 2;
+    grid-column: 1 / 3;
+}
+
+.layout-mobile .itemDetailsGroup {
+    margin-top: 0;
+}
+
+.detailsGroupItem {
+    margin: 0 !important;
+    justify-content: space-between;
+    padding: 0.5em 0.9em;
+    align-items: baseline;
+}
+
+.detailsGroupItem:not(:last-child),
+.itemDetailsGroup > div:not(:last-child) {
+    border-bottom: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+}
+
+.itemDetailsGroup > div:empty {
+    border-bottom: none;
+}
+
+.detailsGroupItem > .label {
+    font-weight: 600;
+    flex-basis: 6em;
+}
+
+.detailsGroupItem > .focuscontainer-x a {
+    font-weight: 400;
+    text-align: end;
+}
+
+.detailsGroupItem > .focuscontainer-x {
+    text-align: end;
+    color: var(--std-sys-color-on-surface-variant);
+}
+
+.detailsGroupItem > .label {
+    color: var(--std-sys-color-on-surface);
+}
+
+.layout-tv .itemDetailsGroup {
+    order: 2;
+}
+
+.detailSection > .nextUpSection {
+    order: 5;
+    grid-column: 1;
+}
+
+.detailSection > #listChildrenCollapsible {
+    order: 6;
+    grid-column: 2 / -1;
+}
+
+.detailSectionContent {
+    order: 1;
+    grid-column: 1 / -1;
+}
+
+.nextUpSection.hide ~ #listChildrenCollapsible,
+.trackSelections.hide ~ .recordingFields.hide ~ .itemDetailsGroup {
+    grid-column: 1 / -1;
+}
+
+.layout-mobile .trackSelections,
+.layout-mobile .detailSectionContent,
+.layout-mobile .itemDetailsGroup,
+.layout-mobile .nextUpSection,
+.layout-mobile .detailSection > #listChildrenCollapsible,
+.layout-tv .trackSelections,
+.layout-tv .detailSectionContent,
+.layout-tv .itemDetailsGroup,
+.layout-tv .nextUpSection,
+.layout-tv .detailSection > #listChildrenCollapsible,
+.collectionItems,
+.programGuideSection,
+.series-episodes-section,
+.series-episodes-section ~ #listChildrenCollapsible {
+    grid-column: 1 / -1;
+}
+
+.series-episodes-section {
+    order: 4;
+}
+
+.collectionItems {
+    order: 2;
+}
+
+.programGuideSection:not(.hide) {
+    order: -1;
+    margin-top: 2em;
+}
+
+.layout-desktop .programGuide {
+    padding-right: var(--sidePadding);
+}
+
+.collectionItems .sectionTitleContainer.padded-left {
+    padding-left: 0.375em;
+}
+
+.collectionItemsContainer.padded-left {
+    padding-left: 0;
+}
+
+
+/* ===========================================
+   SECTION 19 — List Items
+   =========================================== */
+
+.listItemIcon:not(.listItemIcon-transparent) {
+    background-color: var(--std-sys-color-surface-container) !important;
+    color: var(--std-sys-color-on-surface);
+    border: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+}
+
+.listItemIcon.notification_important {
+    background-color: var(--btnDeleteColor) !important;
+    border: solid var(--btnDeleteBorderColor) var(--std-border-width);
+}
+
+.listItemIcon.notifications:not(.listItemIcon-transparent),
+.listItemIcon.schedule:not(.listItemIcon-transparent),
+.listItemIcon.person:not(.listItemIcon-transparent),
+.listItemIcon.live_tv:not(.listItemIcon-transparent) {
+    background-color: var(--std-sys-color-surface-container-low) !important;
+    border: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+}
+
+.readOnlyContent {
+    flex-direction: column !important;
+}
+
+.listItemImage {
+    border-radius: var(--smallRadius);
+    margin-right: 0.75em !important;
+    border: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+}
+
+[dir="ltr"] .listItem:not(.actionSheetMenuItem, .childrenItemsContainer .listItem, .activityLogListWidget .listItem) {
+    padding: 0.375em !important;
+}
+
+[dir="ltr"]
+    .listItem:not(.actionSheetMenuItem, .childrenItemsContainer .listItem, .activityLogListWidget .listItem):not(
+        :last-child
+    ) {
+    margin-bottom: 0.5em;
+}
+
+[dir="ltr"] .listItem:not(.actionSheetMenuItem)[data-type="Episode"] {
+    padding: 0.375em;
+    margin-bottom: 0.5em;
+}
+
+.layout-mobile #songsTab .listItem[data-type="Audio"],
+.layout-mobile #playlist .listItem[data-type="Audio"] {
+    margin: auto 1em;
+}
+
+.listItem[data-type="Audio"]:has(.playlistIndexIndicatorImage) .listItemBodyText {
+    color: var(--std-sys-color-on-surface);
+    font-weight: 600;
+}
+
+.listItem[data-type="Audio"]:has(.playlistIndexIndicatorImage):not(:hover) {
+    background-color: rgba(208, 188, 255, 0.07);
+}
+
+.listItem-largeImage .listItemBodyText:not(.secondary) {
+    font-size: 1.17em;
+    font-weight: 600;
+    color: var(--std-sys-color-on-surface);
+}
+
+.listItemBodyText.secondary {
+    color: var(--std-sys-color-on-surface-variant);
+}
+
+.listItemBody > .listItemBodyText:not(.secondary) {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: inherit;
+}
+
+.listItem-overview {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.listItem-bottomoverview,
+[dir="ltr"] .listItem:not(.actionSheetMenuItem)[data-type="Episode"] .listItem-overview p {
+    margin-top: 0.75em;
+    margin-bottom: 0em;
+}
+
+.listItem,
+.navMenuOption {
+    border-radius: 0.7em;
+}
+
+.listItem:hover,
+.navMenuOption:hover {
+    background: unset;
+    border-radius: 0.7em;
+}
+
+.listItem:focus {
+    background: var(--std-sys-color-primary);
+}
+
+.listItem:active,
+.navMenuOption:active {
+    background: var(--std-sys-color-primary);
+    color: var(--std-sys-color-on-primary);
+}
+
+.listItem-border {
+    border-color: transparent !important;
+}
+
+.listItem-border.emby-button.show-focus:focus {
+    border-radius: var(--smallRadius);
+}
+
+
+/* ===========================================
+   SECTION 20 — MUI / Material UI Overrides
+   =========================================== */
+
+.MuiAppBar-root {
+    background: var(--std-sys-color-surface-container);
+    backdrop-filter: none;
+    border-bottom: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+}
+
+.MuiDrawer-paper {
+    background: var(--std-sys-color-surface-container-low);
+    backdrop-filter: none;
+    border-right: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+    padding: 0.25em;
+}
+
+.MuiListItem-root > a,
+.MuiList-root > a,
+.MuiListItem-root > div {
+    border: solid transparent var(--std-border-width);
+    border-radius: 0.7em;
+}
+
+.Mui-selected {
+    background-color: var(--std-sys-color-secondary-container) !important;
+    color: var(--std-sys-color-on-secondary-container);
+}
+
+.MuiTabs-indicator {
+    display: none;
+}
+
+.MuiTabs-root > .MuiTabs-scroller {
+    align-content: center;
+}
+
+.MuiTabs-flexContainer > .MuiButtonBase-root {
+    border-radius: var(--largeRadius);
+    min-height: 40px;
+    min-width: 72px;
+}
+
+.MuiTabs-flexContainer > .MuiButtonBase-root.Mui-selected {
+    color: var(--std-sys-color-on-surface);
+    background-color: transparent !important;
+}
+
+.MuiToggleButtonGroup-grouped.Mui-selected {
+    color: var(--std-sys-color-on-surface);
+}
+
+.MuiButtonBase-root.MuiIconButton-root:hover {
+    color: var(--std-sys-color-on-surface);
+    background-color: transparent;
+}
+
+.MuiList-root.MuiMenu-list {
+    background-color: var(--std-sys-color-surface-container-high);
+    padding: 0.375em;
+}
+
+ul.MuiList-root.MuiMenu-list.MuiList-dense > div:first-child {
+    gap: 0.5rem;
+}
+
+.MuiAvatar-circular {
+    width: 1.5em;
+    height: 1.5em;
+    border: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+}
+
+
+/* ===========================================
+   SECTION 21 — Action Sheet
+   =========================================== */
+
+.actionsheetDivider {
+    height: 2px;
+    background: var(--std-sys-color-outline-variant);
+}
+
+.actionsheet-xlargeFont {
+    line-height: normal;
+}
+
+.actionSheetContent {
+    padding: 0.4em !important;
+}
+
+.actionSheetContent > h1 {
+    font-size: unset;
+}
+
+[dir="ltr"] .actionsheetMenuItemIcon {
+    margin: 0 0.2em 0 0.45em !important;
+}
+
+.actionSheetMenuItem:has(.listItemIcon.check) {
+    background-color: var(--std-sys-color-secondary-container);
+}
+
+.actionSheetMenuItem:has(.listItemIcon.check) .listItemBodyText {
+    color: var(--std-sys-color-on-secondary-container);
+}
+
+.actionSheetMenuItem:has(.listItemIcon.check) .listItemIcon.check {
+    display: none;
+}
+
+.actionSheetMenuItem:has(.listItemIcon.check[style*="hidden"]) {
+    background-color: transparent;
+}
+
+.actionSheetMenuItem:has(.listItemIcon.check[style*="hidden"]) .listItemBodyText {
+    color: var(--std-sys-color-on-surface);
+    background-color: transparent;
+}
+
+.actionSheetMenuItem:has(.listItemIcon.check[style*="hidden"]):active {
+    background-color: rgba(208, 188, 255, 0.12);
+}
+
+.navMenuOption {
+    border-radius: var(--smallRadius) !important;
+    margin: 0em 1em !important;
+}
+
+[dir="ltr"] .navMenuOption {
+    padding: 0.75em 1em !important;
+    margin-bottom: unset;
+}
+
+#myPreferencesMenuPage .listItemIcon {
+    margin-left: 0.5em;
+    margin-right: 0.25em;
+}
+
+.navMenuOption-selected {
+    background-color: var(--std-sys-color-secondary-container) !important;
+    color: var(--std-sys-color-on-secondary-container);
+}
+
+
+/* ===========================================
+   SECTION 22 — Names & Titles
+   =========================================== */
+
+.nameContainer > h3,
+.nameContainer > h1 {
+    word-break: break-word;
+    overflow: hidden;
+}
+
+.nameContainer > h1.itemName,
+.nameContainer > h1.parentName {
+    font-size: 4em;
+    white-space: pre-wrap;
+    padding-bottom: 0.5ch;
+    color: var(--std-sys-color-on-surface);
+}
+
+.nameContainer > h1.itemName,
+.nameContainer > h1.parentName,
+.nameContainer > h1.itemName a,
+.nameContainer > h1.parentName a {
+    font-weight: 200;
+}
+
+.nameContainer > h1.itemName bdi,
+.nameContainer > h1.parentName bdi,
+.nameContainer > h1.itemName a,
+.nameContainer > h1.parentName a {
+    overflow: hidden;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.layout-mobile .nameContainer > h1.itemName,
+.layout-mobile .nameContainer > h1.parentName,
+.layout-mobile .nameContainer > h1.parentNameLast {
+    font-size: 2em;
+    word-wrap: break-word;
+    padding-bottom: 0ch;
+}
+
+.subtitle {
+    font-size: 2em;
+    padding-bottom: 1em;
+}
+
+.layout-mobile .subtitle {
+    font-size: 1.5em;
+    padding-bottom: 0.5em;
+}
+
+.itemName.originalTitle {
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+    color: var(--std-sys-color-on-surface-variant);
+    display: var(--itemOriginalTitleVisibility);
+}
+
+h2 {
+    font-size: 1.25em;
+}
+
+h1,
+h2 {
+    font-weight: 600;
+}
+
+.tagline {
+    font-size: 1.3em;
+    font-weight: 400;
+    margin: 0;
+    font-style: italic;
+    color: var(--std-sys-color-on-surface);
+}
+
+.pageTitle {
+    height: 1.5em;
+}
+
+.headerLeft .pageTitle {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+
+/* ===========================================
+   SECTION 23 — Overview / Description
+   =========================================== */
+
+.detail-clamp-text {
+    text-align: start;
+    color: var(--std-sys-color-on-surface-variant);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.detail-clamp-text p {
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+}
+
+.layout-desktop .detail-clamp-text {
+    -webkit-line-clamp: 2;
+}
+
+.layout-mobile .detail-clamp-text {
+    -webkit-line-clamp: 4;
+}
+
+.layout-tv .detail-clamp-text {
+    -webkit-line-clamp: 10;
+    transition: none;
+}
+
+.overview-expand.emby-button {
+    padding: 0;
+    margin-top: 1.4em;
+    margin-bottom: 1.4em;
+    color: transparent;
+}
+
+.overview-expand.emby-button:after {
+    content: "keyboard_arrow_down";
+    font-family:
+        var(--iconPack),
+        Material Icons;
+    font-feature-settings: "liga";
+    background: var(--std-sys-color-surface-container);
+    border-radius: 50%;
+    width: 1.5em;
+    height: 1.5em;
+    align-content: center;
+    line-height: 1.6ch;
+    transition: transform 0.5s;
+    color: var(--std-sys-color-on-surface);
+}
+
+.overview.detail-clamp-text ~ .overview-controls .overview-expand:after {
+    transform: rotateZ(0deg);
+}
+
+.overview:not(.detail-clamp-text) ~ .overview-controls .overview-expand:after {
+    transform: rotateZ(180deg);
+}
+
+.overview-controls {
+    height: 0;
+}
+
+.detailSectionContent:has(.itemExternalLinks.hide) .overview-controls {
+    height: 1em;
+}
+
+
+/* ===========================================
+   SECTION 24 — External Links
+   =========================================== */
+
+.itemExternalLinks {
+    color: transparent;
+}
+
+.itemExternalLinks > .button-link {
+    color: var(--std-sys-color-on-surface);
+    background-color: var(--std-sys-color-surface-container);
+    padding: 0.125em 0.5em;
+    border-radius: var(--smallerRadius);
+    margin-bottom: 0.5em;
+}
+
+.layout-mobile .itemExternalLinks > .button-link:hover:not(:active) {
+    color: var(--std-sys-color-on-surface) !important;
+}
+
+.layout-desktop .itemExternalLinks > a:hover,
+.itemExternalLinks > a:active {
+    background-color: var(--std-sys-color-primary) !important;
+    color: var(--std-sys-color-on-primary) !important;
+}
+
+.layout-desktop .itemExternalLinks > a[href*="themoviedb.org"]:hover,
+.itemExternalLinks > a[href*="themoviedb.org"]:active {
+    background-color: #1ab7d8 !important;
+    color: #000 !important;
+}
+
+.layout-desktop .itemExternalLinks > a[href*="imdb.com"]:hover,
+.itemExternalLinks > a[href*="imdb.com"]:active {
+    background-color: #e2b616 !important;
+    color: #000 !important;
+}
+
+.layout-desktop .itemExternalLinks > a[href*="thetvdb.com"]:hover,
+.itemExternalLinks > a[href*="thetvdb.com"]:active {
+    background-color: #6cd591 !important;
+    color: #000 !important;
+}
+
+.layout-desktop .itemExternalLinks > a[href*="trakt.tv"]:hover,
+.itemExternalLinks > a[href*="trakt.tv"]:active {
+    background-color: #ab3aad !important;
+    color: #fff !important;
+}
+
+.layout-desktop .itemExternalLinks > a[href*="theaudiodb.com"]:hover,
+.itemExternalLinks > a[href*="theaudiodb.com"]:active {
+    background-color: #6399cc !important;
+    color: rgb(15, 22, 28) !important;
+}
+
+.layout-desktop .itemExternalLinks > a[href*="musicbrainz.org"]:hover,
+.itemExternalLinks > a[href*="musicbrainz.org"]:active {
+    background-color: #ba478f !important;
+    color: #fff !important;
+}
+
+.layout-desktop .itemExternalLinks > a[href*="letterboxd.com"]:hover,
+.itemExternalLinks > a[href*="letterboxd.com"]:active {
+    background-color: #14181c !important;
+    color: #fff !important;
+}
+
+.layout-desktop .itemExternalLinks > a[title*="Radarr"]:hover,
+.itemExternalLinks > a[title*="Radarr"]:active {
+    background-color: #ffc230 !important;
+    color: #000 !important;
+}
+
+.layout-desktop .itemExternalLinks > a[title*="Sonarr"]:hover,
+.itemExternalLinks > a[title*="Sonarr"]:active {
+    background-color: #07bae9 !important;
+    color: #000 !important;
+}
+
+.layout-desktop .itemExternalLinks > a[title*="Bazarr"]:hover,
+.itemExternalLinks > a[title*="Bazarr"]:active {
+    background-color: var(--std-sys-color-on-surface) !important;
+    color: #000 !important;
+}
+
+.itemTags,
+.itemTags > a {
+    display: none;
+    font-size: unset !important;
+    font-weight: 200;
+}
+
+.seriesAirTime {
+    margin-top: 0.5em;
+}
+
+.itemMiscInfo {
+    align-items: flex-end !important;
+    justify-content: center;
+}
+
+.itemMiscInfo-primary {
+    column-gap: 0.5em;
+}
+
+
+/* ===========================================
+   SECTION 25 — Media Info
+   =========================================== */
+
+.mediaInfoItem {
+    border-radius: var(--smallRadius);
+    font-weight: 500;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.mediaInfoOfficialRating {
+    background: transparent !important;
+    font-size: 0.75em;
+    font-family: "Noto Sans", sans-serif;
+    line-height: 1.5em;
+    transform: translateY(-0.15em);
+    font-weight: 600;
+    border: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+    color: var(--std-sys-color-on-surface);
+}
+
+.starIcon {
+    --tmdb: linear-gradient(to right, #90cea1, #01b4e4);
+    --imdb: linear-gradient(to right, #f2db83, #dba506);
+    --colors: var(--tmdb);
+    background: var(--colors);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-left: -0.125em;
+    transform: translateY(-0.02em);
+}
+
+[dir="ltr"] .mediaInfoCriticRating {
+    background-size: 30%;
+    padding-left: 1.5em;
+}
+
+[dir="ltr"] .mediaInfoCriticRating::after {
+    content: "%";
+}
+
+@media (max-width: 31.25em) {
+    .itemMiscInfo .endsAt {
+        display: var(--endsAtVisibility);
+    }
+
+    .mediaInfoCriticRating {
+        display: var(--criticsRatingVisibility);
+    }
+}
+
+
+/* ===========================================
+   SECTION 26 — Detail Ribbon
+   =========================================== */
+
+.detailRibbon {
+    background-color: transparent;
+}
+
+.detailRibbon:has(.portraitCard .folder) {
+    min-height: 32vh;
+    align-content: flex-end;
+}
+
+.layout-desktop .detailRibbon:has(.person) {
+    min-height: 15vh;
+    align-content: flex-end;
+}
+
+.layout-desktop .detailRibbon {
+    height: 100%;
+    min-height: 25vh;
+    margin-top: unset;
+}
+
+
+/* ===========================================
+   SECTION 27 — Animations
+   =========================================== */
+
+@keyframes animMoveDown {
+    from {
+        transform: translateY(-2em);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes animMoveDownSecondaryPage {
+    from {
+        transform: translateY(-2em);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 0.3;
+    }
+}
+
+@keyframes animMoveUp {
+    from {
+        transform: translateY(-90%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(-100%);
+        opacity: 1;
+    }
+}
+
+@keyframes animScaleUp {
+    from {
+        transform: translateY(-2.5%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0%);
+        opacity: 1;
+    }
+}
+
+
+/* ===========================================
+   SECTION 28 — Video Player & Backdrop
+   =========================================== */
+
+body:not(.hide-scroll) > .videoPlayerContainer {
+    position: relative !important;
+    -webkit-mask: var(--headerBlurMask);
+    mask: var(--headerBlurMask);
+    height: 80vh;
+}
+
+.layout-mobile body:not(.hide-scroll) > .videoPlayerContainer {
+    height: 40vh;
+    z-index: 1;
+}
+
+.layout-desktop > body:not(.hide-scroll) > .videoPlayerContainer ~ #reactRoot > .backgroundContainer.withBackdrop {
+    opacity: 0.25;
+}
+
+.itemBackdrop {
+    display: block !important;
+}
+
+.layout-desktop .itemBackdrop {
+    height: calc(100vh - 27vh - var(--primaryItemPageNegativeSpace));
+}
+
+.layout-mobile .itemBackdrop {
+    margin-top: 0 !important;
+    position: sticky;
+    top: -30%;
+    -webkit-mask: var(--itemBackdropMask);
+    mask: var(--itemBackdropMask);
+    animation: animMoveDown 0.5s ease-out forwards;
+    height: 45vh;
+}
+
+.layout-tv .itemBackdrop {
+    height: 33vh;
+}
+
+#itemDetailPage:has(.subtitle) .itemBackdrop,
+#itemDetailPage:has(.musicParentName) .itemBackdrop,
+#itemDetailPage:has(.detailImageContainer .backdropCard) .itemBackdrop,
+#itemDetailPage:has(.detailImageContainer .squareCard) .itemBackdrop,
+#itemDetailPage:has(.detailImageContainer .person) .itemBackdrop,
+#itemDetailPage:has(.detailImageContainer .queue) .itemBackdrop,
+#itemDetailPage:has(.detailImageContainer .book) .itemBackdrop,
+#itemDetailPage:has(.detailImageContainer .live_tv) .itemBackdrop {
+    height: calc(100vh - 27vh - var(--secondaryItemPageNegativeSpace));
+}
+
+#itemDetailPage:has(.detailImageContainer .cardPadder-square > .person) .itemBackdrop {
+    height: calc(100vh - 4vh - var(--secondaryItemPageNegativeSpace));
+}
+
+html,
+.nowPlayingPlaylist,
+.nowPlayingContextMenu,
+.backgroundContainer:not(.withBackdrop),
+.backgroundContainer:not(.backgroundContainer-transparent),
+.backdropContainer {
+    background-color: var(--std-sys-color-background);
+    background: var(--backgroundGradient);
+}
+
+.backdropImage {
+    background-position-y: clamp(0%, calc(var(--backdropTrimFromTop) * 5), 100%);
+}
+
+.backdropImage:after,
+.backdropImage:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: inherit;
+}
+
+.backdropImage:after {
+    z-index: 0;
+    height: 80vh;
+    -webkit-mask: linear-gradient(180deg, rgba(0, 0, 0, 1) 75%, transparent);
+    mask: linear-gradient(180deg, rgba(0, 0, 0, 1) 75%, transparent);
+}
+
+.layout-desktop .backdropImage:after {
+    transition: opacity 0.25s;
+}
+
+.backdropImage:before {
+    transform: scale(1.1);
+    filter: var(--blurLargest);
+}
+
+.backgroundContainer.withBackdrop {
+    opacity: 0.9;
+    background: linear-gradient(0deg, var(--std-sys-color-background), 45%, rgba(15, 13, 19, 0.25));
+}
+
+.layout-tv .backgroundContainer.withBackdrop {
+    background: linear-gradient(0deg, var(--std-sys-color-background), 45%, rgba(15, 13, 19, 0.95));
+}
+
+.layout-mobile .withSectionTabs .backgroundContainer.withBackdrop {
+    opacity: 0.9;
+}
+
+.layout-mobile .backgroundContainer.withBackdrop {
+    opacity: 1;
+    background: var(--std-sys-color-background);
+}
+
+.withSectionTabs .backgroundContainer.withBackdrop {
+    background: var(--std-sys-color-background);
+}
+
+.layout-desktop .withSectionTabs .backdropImage:after {
+    opacity: 0;
+}
+
+.layout-mobile .withSectionTabs .backdropImage:after {
+    display: none;
+}
+
+.backdropImageFadeIn {
+    transform-origin: bottom center;
+    animation: animScaleUp 0.5s ease-out forwards;
+}
+
+#itemDetailPage:has(.subtitle),
+#itemDetailPage:has(.musicParentName) {
+    background: var(--backgroundAlphaOverlay);
+}
+
+#itemDetailPage:has(.detailImageContainer .cardPadder-square > .person) {
+    background: var(--artistPageBackground, var(--backgroundAlphaOverlay));
+}
+
+.layout-mobile #itemDetailPage:has(.detailImageContainer .backdropCard) .itemBackdrop,
+.layout-mobile #itemDetailPage:has(.subtitle) .itemBackdrop,
+.layout-mobile #itemDetailPage:has(.musicParentName) .itemBackdrop {
+    animation: animMoveDownSecondaryPage 0.5s ease-out forwards;
+}
+
+.layout-mobile .cardImageIcon {
+    font-size: 3.5em;
+}
+
+
+/* ===========================================
+   SECTION 29 — Detail Image Container
+   =========================================== */
+
+.detailImageContainer .card {
+    display: none;
+}
+
+.layout-desktop .detailImageContainer .card {
+    position: relative !important;
+    width: 22vh !important;
+    float: none;
+    left: 0 !important;
+    top: 0;
+    right: 0;
+    margin: auto;
+    margin-bottom: 0;
+    place-self: center;
+}
+
+.detailImageContainer .card.backdropCard {
+    width: 40vh !important;
+    max-width: 50vw;
+}
+
+.layout-tv .detailImageContainer .card {
+    width: 25vw !important;
+    display: block !important;
+    position: fixed !important;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    left: var(--sidePadding);
+    align-content: center;
+    transform: none;
+}
+
+.layout-mobile .detailImageContainer .card {
+    filter: drop-shadow(0 0 0.25rem rgba(0, 0, 0, 0.25));
+}
+
+.layout-mobile [dir="ltr"] .infoWrapper,
+.layout-mobile .infoWrapper {
+    padding-left: 0;
+}
+
+.infoWrapper {
+    align-content: end;
+    place-items: center;
+    display: grid;
+    text-align: center;
+    color: var(--std-sys-color-on-surface);
+}
+
+.layout-mobile .detailImageContainer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-left: 0 !important;
+}
+
+.layout-mobile .detailImageContainer:has(.card:not(.portraitCard)) {
+    height: 0;
+}
+
+.layout-mobile .detailImageContainer .card {
+    position: inherit !important;
+    margin-top: -150%;
+    max-width: 60vw;
+}
+
+.layout-mobile .detailPageWrapperContainer {
+    padding-top: 0;
+    margin-top: 0.5em;
+}
+
+#itemDetailPage:has(.detailImageContainer .backdropCard) .detailLogo,
+#itemDetailPage:has(.detailImageContainer .album) .detailLogo {
+    z-index: 2;
+    display: none;
+}
+
+#itemDetailPage:has(.detailImageContainer .person) .detailLogo {
+    z-index: 2;
+    display: var(--artistClearLogoVisibility);
+}
+
+.detailLogo:not(.hide) ~ .detailPageWrapperContainer .nameContainer h1 {
+    z-index: 2;
+    display: var(--itemTitleVisibility);
+}
+
+.detailImageContainer:has(.squareCard .person) ~ .nameContainer h1 {
+    display: var(--artistTitleVisibility);
+}
+
+.detailLogo.hide ~ .detailPageWrapperContainer .nameContainer h1 {
+    display: block !important;
+}
+
+.detailImageContainer:has(.backdropCard) ~ .nameContainer h1,
+.detailImageContainer:has(.album) ~ .nameContainer h1 {
+    display: block !important;
+}
+
+.detailImageContainer .card.backdropCard:has(.cardImageIcon.album) {
+    max-width: 20vh;
+}
+
+.detailImageContainer .card.backdropCard:has(.cardImageIcon.album) .cardScalable {
+    aspect-ratio: 1 / 1;
+}
+
+#childrenContent:has(.listItem[data-type="Audio"]),
+.programGuideSection {
+    border: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+    border-radius: var(--largeRadius);
+    padding: 0.5em;
+    background-color: var(--std-sys-color-surface-container);
+}
+
+.detailImageContainer > .backdropCard,
+.detailImageContainer > .squareCard,
+.detailImageContainer > .card:has(.book),
+.detailImageContainer > .card:has(.person),
+.detailImageContainer > .card:has(.album),
+.detailImageContainer > .card:has(.queue),
+.detailImageContainer > .card:has(.live_tv) {
+    display: block;
+}
+
+.detailImageContainer .squareCard:has(.person) {
+    display: none;
+}
+
+
+/* ===========================================
+   SECTION 30 — Detail Logo
+   =========================================== */
+
+.detailLogo {
+    display: var(--clearLogoVisibility);
+    top: calc(100vh - var(--clearLogoBottomSpace) - var(--primaryItemPageNegativeSpace));
+    left: 0;
+    width: 40%;
+    transform: translateY(-100%);
+    margin: auto 30%;
+    height: 25vh;
+    filter: var(--clearLogoFilter);
+    background-position: bottom;
+}
+
+.layout-mobile .detailLogo {
+    display: var(--clearLogoVisibility);
+    z-index: 1;
+    position: absolute;
+    left: 1em;
+    top: 45vh;
+    margin: auto 0%;
+    width: calc(100vw - 2em);
+    max-height: 17vh;
+    animation: animMoveUp 1s ease-out forwards;
+}
+
+.layout-tv .detailLogo {
+    display: var(--clearLogoVisibility);
+    height: 20vh;
+    top: 39vh;
+    left: 30vw;
+    width: 60vw;
+    margin: auto 5vw;
+}
+
+#itemDetailPage:has(.subtitle) .detailLogo {
+    top: calc(100vh - 6em - var(--secondaryItemPageNegativeSpace));
+}
+
+.layout-desktop #itemDetailPage:has(.detailImageContainer .person) .detailLogo {
+    top: calc(100vh - var(--secondaryItemPageNegativeSpace));
+}
+
+.layout-mobile #itemDetailPage:has(.subtitle) .detailLogo {
+    top: calc(100vh - 11em - var(--secondaryItemPageNegativeSpace));
+}
+
+
+/* ===========================================
+   SECTION 31 — Header Elements
+   =========================================== */
+
+.skinHeader {
+    padding-top: max(env(safe-area-inset-top), var(--safe-area-inset-top)) !important;
+    color: var(--std-sys-color-on-surface);
+}
+
+.skinHeader.focuscontainer-x.skinHeader-withBackground.skinHeader-blurred.semiTransparent.noHeaderRight {
+    display: none;
+}
+
+.paper-icon-button-light {
+    transition: none;
+}
+
+.paper-icon-button-light > .material-icons {
+    font-size: 1.25em;
+}
+
+.layout-tv .headerLeft {
+    overflow: unset;
+    margin: 0em 0.6em;
+}
+
+.headerUserButton {
+    width: 2em;
+    height: 2em;
+    margin-inline-end: 1em;
+    border: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+}
+
+
+/* ===========================================
+   SECTION 32 — OSD Player
+   =========================================== */
+
+#itemDetailPage .emby-scroller-container,
+#itemDetailPage .emby-scroller,
+#itemDetailPage .scrollX {
+    margin: 0 calc(-1 * var(--sidePadding));
+    padding-left: var(--sidePadding);
+}
+
+.layout-desktop .emby-scroller-container,
+.layout-desktop .emby-scroller,
+.layout-desktop .scrollX {
+    --itemColumnGap: 0.5em;
+}
+
+.emby-scroller,
+.scrollX {
+    padding-left: var(--sidePadding);
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: var(--sidePadding);
+}
+
+.sectionTabs .scrollX {
+    padding-left: 0;
+}
+
+.itemsContainer:not(.editorsChoiceItemsContainer, .vertical-list) {
+    column-gap: var(--itemColumnGap);
+    row-gap: 1em;
+}
+
+.layout-mobile .itemsContainer:not(.editorsChoiceItemsContainer, .vertical-wrap, .vertical-list)::after {
+    content: "13";
+    color: transparent;
+}
+
+.sectionTitle {
+    font-size: 1.5rem !important;
+}
+
+.layout-mobile .sectionTitle {
+    font-size: 1.35rem !important;
+}
+
+[dir="ltr"] .emby-scrollbuttons,
+.emby-scrollbuttons {
+    padding-top: 0;
+}
+
+.emby-scrollbuttons-button.paper-icon-button-light > .material-icons {
+    font-size: 1.5em;
+    place-content: center;
+}
+
+.videoOsdBottom.videoOsdBottom-maincontrols {
+    background: var(--bottomOSDGradient);
+}
+
+.skinHeader-withBackground.osdHeader {
+    background: var(--topOSDGradient);
+}
+
+.headroom {
+    transition: transform 0.5s;
+}
+
+
+/* ===========================================
+   SECTION 33 — Slider / Progress
+   =========================================== */
+
+.sliderContainer {
+    --thumb: 0.4em;
+}
+
+.mdl-slider-container {
+    height: 1em;
+}
+
+.mdl-slider {
+    height: unset;
+}
+
+.mdl-slider-background-flex-container {
+    padding: 0 calc(var(--thumb) / 2);
+}
+
+.sliderBubbleTrack {
+    margin: 0 calc(var(--thumb) / 2);
+}
+
+.sliderBubbleText {
+    font-size: 1.5em;
+}
+
+.mdl-slider-background-flex {
+    border-radius: var(--thumb);
+    height: var(--thumb);
+    margin-top: calc(var(--thumb) / -2);
+    background: rgba(128, 128, 128, 0.5);
+    transition: 0.2s linear;
+}
+
+.sliderContainer:active .mdl-slider-background-flex {
+    --h: calc(var(--thumb) * 1.5);
+    height: var(--h);
+    border-radius: var(--h);
+    margin-top: calc(var(--h) / -2);
+}
+
+.mdl-slider-background-lower {
+    background-color: var(--std-sys-color-on-surface);
+}
+
+.mdl-slider-background-upper {
+    background-color: rgba(128, 128, 128, 0.5);
+}
+
+.mdl-slider::-webkit-slider-thumb {
+    background: var(--std-sys-color-on-surface);
+    width: var(--thumb) !important;
+    height: var(--thumb) !important;
+    border-radius: var(--thumb);
+    transition: 0.2s linear;
+}
+
+.mdl-slider:hover::-webkit-slider-thumb,
+.layout-mobile .mdl-slider::-webkit-slider-thumb,
+.mdl-slider.show-focus:focus::-webkit-slider-thumb {
+    width: calc(var(--thumb) * 1.25) !important;
+    height: calc(var(--thumb) * 5) !important;
+    border-radius: var(--thumb);
+    transform: scale(0.5);
+}
+
+.mdl-slider::-moz-range-thumb {
+    background: var(--std-sys-color-on-surface);
+    width: var(--thumb) !important;
+    height: var(--thumb) !important;
+    border-radius: var(--thumb);
+    transition: 0.2s linear;
+}
+
+.mdl-slider:hover::-moz-range-thumb,
+.mdl-slider.show-focus:focus::-moz-range-thumb {
+    width: calc(var(--thumb) * 1.25) !important;
+    height: calc(var(--thumb) * 5) !important;
+    border-radius: var(--thumb);
+    transform: scale(0.5);
+}
+
+.sliderMarkerContainer {
+    margin: 0 0.1em;
+}
+
+.sliderMarker.watched {
+    background-color: var(--std-sys-color-on-surface);
+}
+
+.sliderMarker {
+    height: 4px;
+    border-radius: 2px;
+}
+
+.iconOsdProgressInner {
+    background: var(--std-sys-color-on-surface);
+}
+
+
+/* ===========================================
+   SECTION 34 — Progress Bars
+   =========================================== */
+
+#divRunningTasks progress {
+    width: calc(100% - 7em);
+}
+
+.listItemImage .itemProgressBar {
+    position: absolute;
+    margin: 8%;
+}
+
+.layout-mobile .listItemImage .itemProgressBar {
+    position: absolute;
+    justify-self: center;
+    margin-bottom: 5%;
+}
+
+.itemProgressBar:not(.backgroundProgress):not(.playbackProgress):not(.transcodingProgress) {
+    backdrop-filter: none;
+    background-color: rgba(128, 128, 128, 0.5) !important;
+    height: 0.35em;
+    overflow: hidden;
+    border-radius: var(--largeRadius);
+}
+
+.layout-mobile .itemProgressBar:not(.backgroundProgress, .playbackProgress, .transcodingProgress) {
+    width: calc(100% - 2em);
+}
+
+.layout-mobile .backdropCard .itemProgressBar:not(.backgroundProgress, .playbackProgress, .transcodingProgress),
+.layout-mobile .portraitCard .itemProgressBar:not(.backgroundProgress, .playbackProgress, .transcodingProgress) {
+    width: 100%;
+    width: -webkit-fill-available;
+}
+
+.itemProgressBarForeground {
+    border-radius: 0 var(--largeRadius) var(--largeRadius) 0;
+    background-color: var(--std-sys-color-on-surface);
+    opacity: 0.75;
+}
+
+.backgroundProgress > div,
+.backgroundProgress {
+    background-color: var(--std-sys-color-background);
+}
+
+.playbackProgress > div {
+    background-color: var(--std-sys-color-primary);
+}
+
+::-moz-progress-bar {
+    background: var(--std-sys-color-primary) !important;
+}
+
+::-webkit-progress-value {
+    background: var(--std-sys-color-primary) !important;
+}
+
+progress,
+::-webkit-progress-bar {
+    background: var(--std-sys-color-background) !important;
+    border: var(--std-border-width) solid var(--std-sys-color-outline-variant) !important;
+    border-radius: var(--smallRadius);
+    overflow: hidden;
+}
+
+progress + span {
+    color: var(--std-sys-color-primary) !important;
+}
+
+.mdl-spinner__circle {
+    border-color: var(--std-sys-color-primary);
+    border-style: inset;
+    border-width: 0.25em;
+}
+
+
+/* ===========================================
+   SECTION 35 — Slider Bubble
+   =========================================== */
+
+.sliderBubble {
+    border-radius: var(--largeRadius);
+    border: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+    overflow: hidden;
+    z-index: 3;
+}
+
+
+/* ===========================================
+   SECTION 36 — Alpha Picker
+   =========================================== */
+
+.alphaPickerButton {
+    font-family: monospace;
+    margin: 0.15em;
+    color: var(--std-sys-color-on-surface-variant);
+}
+
+.alphaPickerButton-selected {
+    background-color: var(--std-sys-color-primary);
+    color: var(--std-sys-color-on-primary) !important;
+}
+
+.alphaPicker-vertical {
+    height: 70%;
+}
+
+.layout-mobile .alphaPicker-vertical {
+    right: 0 !important;
+}
+
+.alphaPicker {
+    justify-content: center;
+}
+
+.alphaPickerButton-tv {
+    transition: transform 0.2s;
+}
+
+.alphaPickerButton-tv:focus {
+    background-color: var(--std-sys-color-primary);
+    transform: scale(1.75);
+}
+
+
+/* ===========================================
+   SECTION 37 — Tables
+   =========================================== */
+
+table:not(.MuiTable-root.MuiTable-stickyHeader) {
+    border-color: var(--std-sys-color-outline-variant) !important;
+    border-radius: var(--smallRadius);
+    border-spacing: 1px;
+    border: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+    background: var(--std-sys-color-surface-container);
+    border-collapse: separate;
+    overflow: hidden;
+}
+
+.detailTableHeaderCell {
+    vertical-align: middle;
+}
+
+#serverActivityPage .MuiPaper-elevation2 {
+    border: var(--std-border-width) solid var(--std-sys-color-outline-variant) !important;
+    box-shadow: unset !important;
+}
+
+#serverActivityPage .MuiPaper-elevation2,
+#serverActivityPage .MuiPaper-elevation2 > .MuiBox-root,
+#serverActivityPage .MuiTableRow-root.MuiTableRow-head {
+    background-color: var(--std-sys-color-surface-container);
+}
+
+.detailTableBodyRow-shaded:nth-child(odd),
+#serverActivityPage .MuiTableBody-root .MuiTableRow-root:nth-child(odd) {
+    background: rgba(15, 13, 19, 0.85) !important;
+}
+
+.detailTableBodyRow-shaded:nth-child(even),
+#serverActivityPage .MuiTableBody-root .MuiTableRow-root:nth-child(even) {
+    background: var(--std-sys-color-surface-container) !important;
+}
+
+
+/* ===========================================
+   SECTION 38 — Toast & Up Next
+   =========================================== */
+
+.toast {
+    border-radius: var(--smallRadius);
+}
+
+.upNextContainer {
+    border-radius: var(--largeRadius);
+    color: var(--std-sys-color-on-surface);
+}
+
+[dir="ltr"] .upNextContainer {
+    margin: 2em;
+    box-sizing: border-box;
+    max-width: 80vw;
+}
+
+.upNextDialog-title {
+    white-space: pre-wrap;
+    width: unset;
+}
+
+.upNextDialog-buttons {
+    width: unset;
+    flex-wrap: wrap;
+}
+
+.upNextContainer .upNextDialog-countdownText {
+    color: var(--std-sys-color-on-surface);
+}
+
+.toast,
+.upNextContainer {
+    color: var(--std-sys-color-on-surface);
+    background: var(--std-sys-color-surface-container-high) !important;
+    border: var(--std-border-width) solid var(--std-sys-color-outline-variant) !important;
+    backdrop-filter: none;
+}
+
+
+/* ===========================================
+   SECTION 39 — Skip Button
+   =========================================== */
+
+.skip-button-container {
+    bottom: 9rem;
+}
+
+.skip-button {
+    background-color: var(--std-sys-color-primary);
+    box-shadow: none;
+    margin-right: var(--sidePadding);
+    border-radius: 3em;
+    color: var(--std-sys-color-on-primary);
+}
+
+.layout-tv .skip-button {
+    margin-right: auto;
+    margin-left: var(--sidePadding);
+}
+
+.skip-button:hover {
+    background-color: var(--std-sys-color-on-surface);
+}
+
+.skip-button:active {
+    background-color: rgba(230, 224, 233, 0.7);
+    box-shadow: none;
+}
+
+
+/* ===========================================
+   SECTION 40 — Player Stats & OSD
+   =========================================== */
+
+.playerStats,
+.iconOsd {
+    border-radius: var(--largeRadius);
+    background-color: var(--std-sys-color-surface-container-high);
+    backdrop-filter: none;
+}
+
+.playerStats-stats {
+    max-height: 50vh;
+    flex-wrap: wrap;
+    overflow-x: auto;
+    padding: 1em !important;
+}
+
+#scenesContent .cardScalable:active {
+    border-color: var(--std-sys-color-primary) !important;
+}
+
+.progressring-spiner {
+    border-color: var(--std-sys-color-primary);
+}
+
+
+/* ===========================================
+   SECTION 41 — Info Banner
+   =========================================== */
+
+.infoBanner {
+    display: flex;
+    place-content: center;
+    background-color: var(--std-sys-color-surface-container) !important;
+    border-radius: var(--largeRadius) !important;
+    border: var(--std-border-width) solid var(--std-sys-color-outline-variant) !important;
+}
+
+
+/* ===========================================
+   SECTION 42 — Fieldset
+   =========================================== */
+
+fieldset {
+    border-radius: var(--smallRadius);
+    border: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+}
+
+
+/* ===========================================
+   SECTION 43 — Now Playing
+   =========================================== */
+
+.appfooter {
+    background-color: var(--std-sys-color-surface-container) !important;
+    backdrop-filter: none !important;
+    color: var(--std-sys-color-on-surface);
+    border-top: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+}
+
+.lyricPage {
+    padding: 0 var(--sidePadding);
+}
+
+.lyricsLine {
+    font-size: 2em;
+    color: var(--std-sys-color-on-surface);
+    text-align: center;
+    align-self: center;
+    font-weight: 600;
+    transition: transform 0.125s;
+}
+
+.pastLyric,
+.futureLyric {
+    transform: scale(0.85);
+    font-weight: 400;
+    text-align: center;
+}
+
+.pastLyric {
+    opacity: 0.45;
+}
+
+.buttonActive {
+    color: var(--std-sys-color-primary) !important;
+}
+
+.nowPlayingSongName.nowPlayingEpisode {
+    margin-bottom: 1em;
+    font-size: 1.25em;
+    color: var(--std-sys-color-on-surface);
+}
+
+.nowPlayingAlbum.nowPlayingSeason {
+    color: var(--std-sys-color-on-surface-variant);
+    margin-bottom: 0.5em;
+}
+
+.nowPlayingArtist.nowPlayingSerie {
+    margin-bottom: 0.5em;
+}
+
+.playlistIndexIndicatorImage {
+    background-blend-mode: difference;
+    background-color: var(--std-sys-color-on-surface);
+    background-size: contain !important;
+}
+
+.playlistIndexIndicatorImage.defaultCardBackground .audiotrack {
+    display: none;
+}
+
+.activeSession {
+    width: 98% !important;
+}
+
+.nowPlayingButtonsContainer {
+    margin-top: 1em;
+}
+
+.nowPlayingPageImageContainerNoAlbum {
+    border: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+    border-radius: var(--smallRadius);
+    overflow: hidden;
+}
+
+.nowPlayingPageImageContainerNoAlbum .defaultCardBackground {
+    background: repeating-radial-gradient(#000, transparent 10em);
+}
+
+.nowPlayingPageImageContainerNoAlbum .cardImageContainer .cardImageIcon {
+    color: var(--std-sys-color-outline-variant);
+}
+
+.layout-mobile .playlistSection .playlist {
+    padding: 4.3em 0;
+    top: 0;
+    bottom: 4.3em;
+    background: var(--std-sys-color-surface-container);
+    backdrop-filter: none;
+    z-index: 0;
+}
+
+.layout-mobile .playlistSectionButton {
+    background: var(--std-sys-color-surface-container-high);
+    border-top: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+    backdrop-filter: none;
+    color: var(--std-sys-color-on-surface);
+    z-index: 1;
+}
+
+.layout-mobile .playlistSectionButton.playlistSectionButtonTransparent {
+    background: transparent;
+    border-top: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+    border-color: transparent;
+    color: var(--std-sys-color-on-surface);
+}
+
+.layout-desktop .nowPlayingInfoContainer {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 5em;
+    padding: 1em;
+    margin-bottom: 2em;
+    backdrop-filter: none;
+    border: var(--std-border-width) solid var(--std-sys-color-outline);
+    z-index: 2;
+    background-color: var(--std-sys-color-surface-container);
+    box-shadow: none;
+    border-radius: var(--largerRadius);
+    box-sizing: border-box;
+}
+
+.layout-desktop .nowPlayingInfoControls {
+    margin: 0em 2em;
+}
+
+.nowPlayingPageImage {
+    box-shadow: none;
+    border-radius: var(--smallRadius);
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
+}
+
+.nowPlayingBar .playPauseButton {
+    font-size: 2em;
+}
+
+.nowPlayingInfoContainer .btnPlayPause {
+    font-size: 3em;
+}
+
+.nowPlayingBar .nowPlayingImage {
+    background-size: cover;
+    border-radius: var(--smallerRadius);
+    height: 3.5em;
+    margin: 0.25em;
+    width: 3.5em;
+}
+
+.nowPlayingBarPositionContainer {
+    top: -0.7em;
+}
+
+@media (orientation: portrait) and (max-width: 43em) {
+    .nowPlayingPageImageContainerNoAlbum .cardImageContainer .cardImageIcon {
+        font-size: 8em !important;
+    }
+
+    .nowPlayingInfoContainer {
+        height: calc(95% - 4.2em);
+    }
+}
+
+
+/* ===========================================
+   SECTION 44 — Login Page
+   =========================================== */
+
+#loginPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1em;
+    overflow-y: auto;
+    background:
+        linear-gradient(to bottom, var(--std-sys-color-surface-container), var(--std-sys-color-background)),
+        var(--loginPageBgUrl);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+}
+
+#loginPage .padded-left.padded-right.padded-bottom-page {
+    width: 28em;
+    background: var(--std-sys-color-surface-container-high);
+    padding: 2em 2em 1em 2em !important;
+    border-radius: var(--largerRadius);
+    backdrop-filter: none;
+    box-sizing: border-box;
+    transform: translateY(3em);
+    border: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+}
+
+.manualLoginForm .sectionTitle,
+.visualLoginForm > h1 {
+    display: none;
+}
+
+#loginPage .padded-left.padded-right.padded-bottom-page:has(.visualLoginForm:not(.hide)) {
+    width: 40em;
+}
+
+#divUsers .squareCard {
+    width: 30% !important;
+}
+
+.layout-mobile #divUsers .squareCard {
+    width: 45% !important;
+}
+
+.manualLoginForm::before,
+.visualLoginForm::before {
+    content: var(--loginPageText);
+    position: relative;
+    display: block;
+    top: -3.5em;
+    margin-bottom: -1em;
+    font-size: 1.875em;
+    font-weight: 800;
+    color: var(--std-sys-color-on-surface);
+    text-align: center;
+}
+
+.manualLoginForm,
+.visualLoginForm {
+    position: relative;
+}
+
+#quickConnectPreferencesPage .padded-left.padded-right.padded-bottom-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#txtLoginDisclaimer {
+    resize: none;
+}
+
+
+/* ===========================================
+   SECTION 45 — Time Display
+   =========================================== */
+
+.startTimeText,
+.endTimeText,
+.positionTime,
+.runtime {
+    width: 4.5em;
+    box-sizing: border-box;
+    font-variant-numeric: tabular-nums;
+}
+
+.startTimeText {
+    margin: 0 !important;
+}
+
+.endTimeText {
+    justify-content: right;
+    padding-inline-end: 0.8em;
+    margin: 0 0 0 0.75em !important;
+}
+
+.startTimeText,
+.endTimeText {
+    padding-top: 0.25em;
+}
+
+.startTimeText,
+.positionTime {
+    text-align: start;
+    justify-content: left;
+}
+
+.endTimeText,
+.runtime {
+    text-align: end;
+    justify-content: right;
+}
+
+
+/* ===========================================
+   SECTION 46 — Filter & Library
+   =========================================== */
+
+.filterIndicator {
+    background: var(--std-sys-color-primary);
+}
+
+.overflowBackdropCard[data-type="CollectionFolder"] .cardPadder-overflowBackdrop,
+.overflowBackdropCard[data-type="UserView"] .cardPadder-overflowBackdrop {
+    padding-bottom: 50%;
+}
+
+.overflowBackdropCard[data-type="CollectionFolder"] .cardText-first,
+.overflowBackdropCard[data-type="UserView"] .cardText-first {
+    display: var(--libraryLabelVisibility);
+}
+
+
+/* ===========================================
+   SECTION 47 — Home Library Button
+   =========================================== */
+
+.homeLibraryButton {
+    width: min(45%, 12rem);
+    min-width: 15%;
+    margin: 0 !important;
+}
+
+@media (max-width: 50em) {
+    .homeLibraryButton {
+        width: 47.6% !important;
+    }
+}
+
+@media (orientation: portrait) and (max-width: 40em) {
+    [data-type="Movie"] .listItemImage,
+    [data-type="Series"] .listItemImage {
+        display: unset;
+    }
+
+    .dashboardActionsContainer {
+        font-size: min(3.6vw, 98%);
+    }
+}
+
+@media (orientation: portrait) {
+    .layout-mobile .skinHeader.noHomeButtonHeader .headerSyncButton {
+        display: none;
+    }
+
+    .layout-mobile .btnPlay.detailButton:not(.play-button) {
+        flex: 0 0 100%;
+        margin-right: 0 !important;
+    }
+}
+
+
+/* ===========================================
+   SECTION 48 — Section Title
+   =========================================== */
+
+.sectionTitleTextButton {
+    padding: 0 0.5em;
+}
+
+.sectionTitleTextButton:hover {
+    background: transparent !important;
+}
+
+.sectionTitleTextButton:active {
+    color: var(--std-sys-color-on-surface) !important;
+}
+
+.sectionTitleContainer-cards {
+    padding-top: 0;
+    padding-bottom: 0.2em;
+}
+
+.sectionTitleTextButton > * {
+    text-align: left;
+    padding: 0.3em 0 !important;
+    margin: 0 0 !important;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 88vw;
+}
+
+.dashboardSection .sectionTitleTextButton > .material-icons,
+.sectionTitleTextButton > .material-icons,
+.dashboardSection .sectionTitleTextButton > .material-icons.material-icons {
+    font-size: unset;
+}
+
+.sectionTitleTextButton > .chevron_right {
+    --fill: 0;
+    --opsz: 48;
+    font-size: 1.5rem;
+}
+
+.sectionTitleTextButton > .chevron_right::before {
+    content: "arrow_circle_right";
+}
+
+
+/* ===========================================
+   SECTION 49 — Padding & Content
+   =========================================== */
+
+.padded-right {
+    padding-right: var(--sidePadding) !important;
+}
+
+[dir="ltr"] .detailPageContent,
+.content-primary {
+    padding-left: var(--sidePadding) !important;
+    padding-right: var(--sidePadding) !important;
+}
+
+[dir="ltr"] .detailPageContent > .detailPagePrimaryContent {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+#itemDetailPage .verticalSection .itemsContainer.padded-right {
+    padding-right: 0 !important;
+}
+
+.vertical-list > .listGroupHeader {
+    padding-left: 0.5ch;
+}
+
+.listPaging > span {
+    padding: 0 0.5em;
+}
+
+.layout-mobile #myPreferencesMenuPage {
+    padding-top: var(--appBarHeight) !important;
+}
+
+.dashboardDocument .content-primary {
+    padding-top: 4.25rem;
+}
+
+.editorNode {
+    display: flex;
+    align-items: center;
+}
+
+.metadataSidebarIcon {
+    color: #6c7bab;
+}
+
+.jstree-default .jstree-wholerow-clicked {
+    background: var(--std-sys-color-surface-container) !important;
+}
+
+.verticalSection:not(:empty) {
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+}
+
+.centerMessage {
+    width: unset;
+}
+
+.noItemsMessage {
+    width: 90%;
+}
+
+
+/* ===========================================
+   SECTION 50 — Subtitle Appearance
+   =========================================== */
+
+.subtitleappearance-preview {
+    border-radius: var(--smallRadius);
+}
+
+.emby-select-iconbutton {
+    background-color: var(--std-sys-color-surface-container);
+    border: var(--std-border-width) solid var(--std-sys-color-outline);
+    border-radius: var(--smallRadius);
+    margin-inline-start: 1em;
+}
+
+#viewPanel .ui-panel-inner {
+    margin-top: 4em;
+}
+
+
+/* ===========================================
+   SECTION 51 — Hover States (Desktop Only)
+   =========================================== */
+
+@media (hover: hover) and (pointer: fine) {
+    .paper-icon-button-light:hover:not(:disabled) {
+        color: var(--std-sys-color-on-primary);
+        text-shadow: none !important;
+        background-color: var(--std-sys-color-primary);
+    }
+
+    .emby-select-withcolor:hover:not(.emby-select[disabled], :focus),
+    .emby-input:hover:not(:focus),
+    .emby-textarea:hover:not(:focus) {
+        border-color: var(--std-sys-color-on-surface-variant) !important;
+    }
+
+    .checkboxContainer:hover .checkboxOutline:not(.multiSelectCheckboxOutline) {
+        border-color: var(--std-sys-color-primary);
+        border-width: var(--std-border-width-thick);
+    }
+
+    .button-flat:hover {
+        background-color: rgba(208, 188, 255, 0.12);
+        color: var(--std-sys-color-on-surface);
+    }
+
+    .btnPlay.detailButton:hover {
+        background-color: var(--std-sys-color-primary);
+        filter: brightness(1.1);
+        color: var(--std-sys-color-on-primary);
+    }
+
+    .alphaPickerButton:hover {
+        color: var(--std-sys-color-on-surface);
+    }
+
+    .listItem-largeImage:hover {
+        backdrop-filter: var(--blurLargest);
+    }
+
+    .listItem:not(.actionSheetMenuItem:has(.check)):hover {
+        color: var(--std-sys-color-on-primary) !important;
+        background: var(--std-sys-color-primary) !important;
+    }
+
+    .listItem:hover .listItemBodyText,
+    .listItem:hover .secondary {
+        color: var(--std-sys-color-on-primary) !important;
+    }
+
+    .navMenuOption:not(.navMenuOption-selected):hover {
+        color: var(--std-sys-color-on-primary) !important;
+        background: var(--std-sys-color-primary) !important;
+    }
+
+    .actionSheetMenuItem:has(.listItemIcon.check[style*="hidden"]):hover {
+        color: var(--std-sys-color-on-primary) !important;
+        background: var(--std-sys-color-primary) !important;
+    }
+
+    .searchfields-icon:hover,
+    .inputContainer .emby-input-iconbutton:hover {
+        color: var(--std-sys-color-on-surface);
+    }
+
+    #scenesContent .cardScalable:hover {
+        border-color: var(--std-sys-color-primary) !important;
+    }
+
+    .sectionTitleTextButton:hover {
+        background: transparent !important;
+        color: var(--std-sys-color-on-surface) !important;
+    }
+
+    .button-link:hover {
+        color: var(--std-sys-color-on-surface) !important;
+        text-decoration: none;
+    }
+
+    .sectionTabs .emby-tab-button:hover {
+        color: var(--std-sys-color-on-surface);
+        background-color: var(--std-sys-color-surface-container-high);
+    }
+}
+
+.paper-icon-button-light:active:not(:disabled) {
+    color: var(--std-sys-color-on-primary);
+    text-shadow: none !important;
+    background-color: var(--std-sys-color-primary);
+}
+
+.layout-mobile .cardOverlayButton-br:active > .cardOverlayButtonIcon {
+    color: var(--std-sys-color-on-primary);
+    text-shadow: none;
+}
+
+
+/* ===========================================
+   SECTION 52 — Dialog TOC
+   =========================================== */
+
+#dialogToc {
+    background-color: var(--std-sys-color-surface-container-high);
+    max-height: unset;
+    max-width: unset;
+}
+
+#dialogToc .toc li {
+    font-size: unset;
+    font-weight: 600;
+    list-style-type: circle;
+    margin-bottom: 0.5em;
+    font-family: "Math", serif;
+}
+
+
+/* ===========================================
+   SECTION 53 — TV Layout
+   =========================================== */
+
+.layout-tv .show-focus:focus,
+.layout-tv .show-animation:focus,
+.emby-select-focusscale:focus {
+    transform: none !important;
+}
+
+.layout-tv .focuscontainer,
+.layout-tv .backdropImage {
+    animation-duration: 0s !important;
+    backdrop-filter: none;
+}
+
+.card.show-animation .cardBox {
+    transition: transform 0.05s ease-out;
+}
+
+
+/* ===========================================
+   SECTION 54 — Media Bar Plugin
+   =========================================== */
+
+#slides-container {
+    top: calc(-0.5 * var(--appBarHeight));
+}
+
+.backdrop-overlay {
+    background: linear-gradient(
+        var(--std-sys-color-surface),
+        rgba(208, 188, 255, 0.3),
+        60%,
+        rgba(15, 13, 19, 0.85)
+    );
+}
+
+.plot {
+    color: var(--std-sys-color-on-surface);
+    text-shadow: 1px 1px rgba(33, 31, 38, 0.85);
+}
+
+.button-container {
+    align-items: center;
+}
+
+.favorite-button {
+    background: none;
+    color: var(--std-sys-color-on-surface);
+}
+
+.detail-button:hover,
+.favorite-button:hover {
+    background: var(--std-sys-color-on-surface-variant);
+    color: var(--std-sys-color-surface);
+}
+
+
+/* ===========================================
+   SECTION 55 — Remote Control
+   =========================================== */
+
+.nowPlayingPage {
+    background: linear-gradient(rgba(15, 13, 19, 0.85), transparent);
+}
+
+.remoteControlContent {
+    padding: 0 var(--sidePadding) !important;
+    background: linear-gradient(transparent, rgba(15, 13, 19, 0.85) 20em);
+}

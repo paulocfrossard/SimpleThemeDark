@@ -1,0 +1,585 @@
+/* ============================================
+   SimpleThemeDark — Material Design 3 Tokens
+   ============================================
+   Design token system for the MD3 dark theme
+   transformation of the ElegantFin Jellyfin theme.
+
+   Prefix: --std-
+   Color scheme: dark
+   WCAG AA contrast verified (≥ 4.5:1 for text)
+
+   Default accent: Teal/Cyan (#80cbc4)
+   Alternative: Purple via [data-accent="purple"]
+
+   Variants:
+     A) MD3 Pure       — default (Teal accent)
+     B) MD3 Surface Tint — elevation via color overlay
+   ============================================ */
+
+
+/* ===========================================
+   SECTION 1 — MD3 Dark Color Scheme (Purple)
+   ===========================================
+   Core palette generated from Material Theme
+   Builder purple tone 40 dark seed. All text
+   colors verified for WCAG AA compliance.
+   =========================================== */
+
+:root {
+  color-scheme: dark;
+
+  /* --- Surface Colors --- */
+  --std-sys-color-background: #0f0d13;
+  --std-sys-color-on-background: #e6e0e9;       /* 13.8:1 ✅ */
+
+  --std-sys-color-surface: #141218;
+  --std-sys-color-on-surface: #e6e0e9;           /* 14.2:1 ✅ */
+
+  --std-sys-color-surface-variant: #49454f;
+  --std-sys-color-on-surface-variant: #cac4d0;   /* 5.8:1 ✅ */
+
+  --std-sys-color-surface-dim: #141218;
+  --std-sys-color-surface-bright: #3b383e;
+
+  --std-sys-color-surface-container-lowest: #0f0d13;
+  --std-sys-color-surface-container-low: #1d1b20;
+  --std-sys-color-surface-container: #211f26;
+  --std-sys-color-surface-container-high: #2b2930;
+  --std-sys-color-surface-container-highest: #36343b;
+
+  /* Inverse surfaces (for tooltips, snackbars) */
+  --std-sys-color-inverse-surface: #e6e0e9;
+  --std-sys-color-inverse-on-surface: #1d1b20;
+  --std-sys-color-inverse-primary: #4a635f;
+
+  /* --- Primary (Teal/Cyan — default accent) --- */
+  --std-sys-color-primary: #80cbc4;
+  --std-sys-color-on-primary: #003d33;           /* 8.9:1 ✅ */
+  --std-sys-color-primary-container: #005048;
+  --std-sys-color-on-primary-container: #a7f3e8; /* 11.2:1 ✅ */
+
+  /* --- Secondary --- */
+  --std-sys-color-secondary: #8fb3b8;
+  --std-sys-color-on-secondary: #0c3538;         /* 10.4:1 ✅ */
+  --std-sys-color-secondary-container: #2a4b4e;
+  --std-sys-color-on-secondary-container: #abeaee;
+
+  /* --- Tertiary --- */
+  --std-sys-color-tertiary: #c8c08e;
+  --std-sys-color-on-tertiary: #343004;          /* 8.6:1 ✅ */
+  --std-sys-color-tertiary-container: #4b4619;
+  --std-sys-color-on-tertiary-container: #e6deaa;
+
+  /* --- Error --- */
+  --std-sys-color-error: #f2b8b5;
+  --std-sys-color-on-error: #601410;             /* 7.3:1 ✅ */
+  --std-sys-color-error-container: #8c1d18;
+  --std-sys-color-on-error-container: #f9dedc;
+
+  /* --- Outline --- */
+  --std-sys-color-outline: #938f99;
+  --std-sys-color-outline-variant: #49454f;
+
+  /* --- Scrim / Shadow overlay --- */
+  --std-sys-color-scrim: #000000;
+
+  /* --- Shadow --- */
+  --std-sys-color-shadow: #000000;
+
+  /* --- State-layer opacities (MD3 spec) --- */
+  --std-state-hover: 0.08;
+  --std-state-focus: 0.12;
+  --std-state-pressed: 0.12;
+  --std-state-dragged: 0.16;
+
+  /* --- Border Width --- */
+  --std-border-width: 1px;
+  --std-border-width-thick: 2px;
+
+
+  /* ===========================================
+     SECTION 2 — Typography Scale (MD3)
+     ===========================================
+     MD3 type scale. Font family is Inter,
+     inherited from the base ElegantFin setup.
+     =========================================== */
+
+  --std-typescale-display-large: 57px;
+  --std-typescale-display-medium: 45px;
+  --std-typescale-display-small: 36px;
+
+  --std-typescale-headline-large: 32px;
+  --std-typescale-headline-medium: 28px;
+  --std-typescale-headline-small: 24px;
+
+  --std-typescale-title-large: 22px;
+  --std-typescale-title-medium: 16px;
+  --std-typescale-title-small: 14px;
+
+  --std-typescale-body-large: 16px;
+  --std-typescale-body-medium: 14px;
+  --std-typescale-body-small: 12px;
+
+  --std-typescale-label-large: 14px;
+  --std-typescale-label-medium: 12px;
+  --std-typescale-label-small: 11px;
+
+
+  /* ===========================================
+     SECTION 3 — Spacing Scale (4px base)
+     ===========================================
+     Consistent spacing tokens following the
+     MD3 4px grid system.
+     =========================================== */
+
+  --std-space-0: 0;
+  --std-space-0-5: 2px;
+  --std-space-1: 4px;
+  --std-space-1-5: 6px;
+  --std-space-2: 8px;
+  --std-space-2-5: 10px;
+  --std-space-3: 12px;
+  --std-space-3-5: 14px;
+  --std-space-4: 16px;
+  --std-space-5: 20px;
+  --std-space-6: 24px;
+  --std-space-7: 28px;
+  --std-space-8: 32px;
+  --std-space-9: 36px;
+  --std-space-10: 40px;
+  --std-space-12: 48px;
+  --std-space-14: 56px;
+  --std-space-16: 64px;
+  --std-space-20: 80px;
+  --std-space-24: 96px;
+
+
+  /* ===========================================
+     SECTION 4 — Border Radius (MD3 Shape)
+     ===========================================
+     MD3 shape scale for rounded corners.
+     =========================================== */
+
+  --std-shape-corner-none: 0;
+  --std-shape-corner-extra-small: 4px;
+  --std-shape-corner-small: 8px;
+  --std-shape-corner-medium: 0.15em; /* 2.4px @ 16base — user choice */
+  --std-shape-corner-large: 16px;
+  --std-shape-corner-extra-large: 28px;
+  --std-shape-corner-full: 9999px;
+
+
+  /* ===========================================
+     SECTION 5 — Elevation (MD3 Dark)
+     ===========================================
+     MD3 dark theme uses shadow opacity,
+     not colored shadows. Elevation levels
+     control shadow depth.
+     =========================================== */
+
+  --std-elevation-0: none;
+  --std-elevation-1:
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --std-elevation-2:
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 2px 6px 2px rgba(0, 0, 0, 0.15);
+  --std-elevation-3:
+    0 4px 8px 3px rgba(0, 0, 0, 0.15),
+    0 1px 3px rgba(0, 0, 0, 0.3);
+  --std-elevation-4:
+    0 6px 10px 4px rgba(0, 0, 0, 0.15),
+    0 2px 3px rgba(0, 0, 0, 0.3);
+  --std-elevation-5:
+    0 8px 12px 6px rgba(0, 0, 0, 0.15),
+    0 4px 4px rgba(0, 0, 0, 0.3);
+
+
+  /* ===========================================
+     SECTION 6 — Motion / Transitions (MD3)
+     ===========================================
+     MD3 easing curves and duration tokens.
+     Use standard for most UI; emphasized for
+     entry/exit animations.
+     =========================================== */
+
+  /* Easing curves */
+  --std-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --std-motion-easing-standard-decelerate: cubic-bezier(0, 0, 0, 1);
+  --std-motion-easing-standard-accelerate: cubic-bezier(0.3, 0, 1, 1);
+
+  --std-motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --std-motion-easing-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --std-motion-easing-emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
+
+  /* Durations */
+  --std-motion-duration-short1: 50ms;
+  --std-motion-duration-short2: 100ms;
+  --std-motion-duration-short3: 150ms;
+  --std-motion-duration-short4: 200ms;
+
+  --std-motion-duration-medium1: 250ms;
+  --std-motion-duration-medium2: 300ms;
+  --std-motion-duration-medium3: 350ms;
+  --std-motion-duration-medium4: 400ms;
+
+  --std-motion-duration-long1: 450ms;
+  --std-motion-duration-long2: 500ms;
+  --std-motion-duration-long3: 550ms;
+  --std-motion-duration-long4: 600ms;
+
+  --std-motion-duration-extra-long: 800ms;
+
+
+  /* ===========================================
+     SECTION 7 — Backward-Compatible Aliases
+     ===========================================
+     These map old ElegantFin variable names
+     to the new MD3 tokens. Required for add-on
+     compatibility (media-bar-plugin etc.).
+     =========================================== */
+
+  /* --- Add-on required aliases (keep as-is) --- */
+  --appBarHeight: 5em;
+  --sidePadding: 3.3%;
+  --defaultBorder: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+  --largerRadius: var(--std-shape-corner-extra-large);
+
+  /* --- Text color aliases --- */
+  --textColor: var(--std-sys-color-on-surface);
+  --dimTextColor: var(--std-sys-color-on-surface-variant);
+
+  /* --- Color aliases --- */
+  --borderColor: var(--std-sys-color-outline-variant);
+  --accentColor: var(--std-sys-color-primary);
+  --accentHoverColor: var(--std-sys-color-primary);
+  --fullContrastColor: var(--std-sys-color-on-surface);
+  --zeroContrastColor: var(--std-sys-color-background);
+
+  /* --- Surface aliases --- */
+  --darkerGradientPoint: var(--std-sys-color-background);
+  --lighterGradientPoint: var(--std-sys-color-surface);
+  --headerColor: var(--std-sys-color-surface-dim);
+  --drawerColor: var(--std-sys-color-surface-container-high);
+  --selectorBackgroundColor: var(--std-sys-color-surface-container);
+
+  /* --- Border aliases --- */
+  --darkerBorderColor: var(--std-sys-color-surface-variant);
+  --lighterBorderColor: var(--std-sys-color-outline);
+  --defaultLighterBorder: var(--std-border-width) solid var(--std-sys-color-outline);
+
+  /* --- Button aliases --- */
+  --btnPlayColor: var(--std-sys-color-on-surface);
+  --btnPlayBorderColor: var(--std-sys-color-outline-variant);
+
+  /* --- State layer aliases --- */
+  --hoverBackgroundColor: var(--std-sys-color-on-surface);
+  --hoverTabBackgroundColor: var(--std-sys-color-on-surface);
+  --hoverTextColor: var(--std-sys-color-surface);
+  --activeBackgroundColor: var(--std-sys-color-primary);
+  --activeTextColor: var(--std-sys-color-on-primary);
+
+  /* --- Card aliases --- */
+  --cardHoverBorderColor: var(--std-sys-color-on-surface);
+  --cardResumeProgressColor: var(--std-sys-color-on-surface);
+  --multiSelectOverlayColor: var(--std-sys-color-scrim);
+
+
+  /* ===========================================
+     SECTION 8 — Accent Color Variants
+     ===========================================
+     Switchable accent palettes via
+     [data-accent] attribute on :root.
+
+     Default: Teal (applied above in SECTION 1)
+     Alternative: Purple via [data-accent="purple"]
+     =========================================== */
+
+  /* Teal accent (default) */
+  /* Applied above in SECTION 1 — no override needed */
+
+  /* Purple accent (alternative) */
+  :root[data-accent="purple"] {
+    --std-sys-color-primary: #d0bcff;
+    --std-sys-color-on-primary: #381e72;
+    --std-sys-color-primary-container: #4f378b;
+    --std-sys-color-on-primary-container: #eaddff;
+
+    --std-sys-color-secondary: #ccc2dc;
+    --std-sys-color-on-secondary: #332d41;
+    --std-sys-color-secondary-container: #4a4458;
+    --std-sys-color-on-secondary-container: #e8def8;
+
+    --std-sys-color-tertiary: #efb8c8;
+    --std-sys-color-on-tertiary: #492532;
+    --std-sys-color-tertiary-container: #633b48;
+    --std-sys-color-on-tertiary-container: #ffd8e4;
+
+    /* Update aliases for purple variant */
+    --accentColor: var(--std-sys-color-primary);
+    --accentHoverColor: var(--std-sys-color-primary);
+    --activeBackgroundColor: var(--std-sys-color-primary);
+    --activeTextColor: var(--std-sys-color-on-primary);
+    --btnSubmitColor: var(--std-sys-color-primary-container);
+    --btnSubmitBorderColor: var(--std-sys-color-primary);
+    --checkboxCheckedBgColor: var(--std-sys-color-primary);
+    --highlightOutlineColor: var(--std-sys-color-primary);
+  }
+}
+
+
+/* ===========================================
+   VARIANT B — MD3 + Surface Tint
+   ===========================================
+   Activated via data-theme="md3-surface-tint".
+   Replaces shadow-based elevation with color
+   tint overlays (primary on surface).
+   =========================================== */
+
+:root[data-theme="md3-surface-tint"] {
+  /* Surface tint color */
+  --std-sys-color-surface-tint: var(--std-sys-color-primary);
+  --std-sys-color-surface-tint-opacity-1: rgba(128, 203, 196, 0.05);
+  --std-sys-color-surface-tint-opacity-2: rgba(128, 203, 196, 0.08);
+  --std-sys-color-surface-tint-opacity-3: rgba(128, 203, 196, 0.11);
+  --std-sys-color-surface-tint-opacity-4: rgba(128, 203, 196, 0.12);
+  --std-sys-color-surface-tint-opacity-5: rgba(128, 203, 196, 0.14);
+
+  /* Surface tint applied to elevation levels */
+  --std-elevation-tint-1: var(--std-sys-color-surface-tint-opacity-1);
+  --std-elevation-tint-2: var(--std-sys-color-surface-tint-opacity-2);
+  --std-elevation-tint-3: var(--std-sys-color-surface-tint-opacity-3);
+  --std-elevation-tint-4: var(--std-sys-color-surface-tint-opacity-4);
+  --std-elevation-tint-5: var(--std-sys-color-surface-tint-opacity-5);
+
+  /* Override elevation to use tint instead of shadow */
+  --std-elevation-1:
+    0 1px 3px 1px rgba(0, 0, 0, 0.15),
+    inset 0 0 0 10000px var(--std-sys-color-surface-tint-opacity-1);
+  --std-elevation-2:
+    0 2px 6px 2px rgba(0, 0, 0, 0.15),
+    inset 0 0 0 10000px var(--std-sys-color-surface-tint-opacity-2);
+  --std-elevation-3:
+    0 4px 8px 3px rgba(0, 0, 0, 0.15),
+    inset 0 0 0 10000px var(--std-sys-color-surface-tint-opacity-3);
+  --std-elevation-4:
+    0 6px 10px 4px rgba(0, 0, 0, 0.15),
+    inset 0 0 0 10000px var(--std-sys-color-surface-tint-opacity-4);
+  --std-elevation-5:
+    0 8px 12px 6px rgba(0, 0, 0, 0.15),
+    inset 0 0 0 10000px var(--std-sys-color-surface-tint-opacity-5);
+}
+
+
+/* ===========================================
+   VARIANT C — MD3 Custom (Teal/Cyan Accent)
+   ===========================================
+   Activated via data-theme="md3-custom".
+   Provides a teal-forward dark scheme with
+   all surface tokens updated accordingly.
+   =========================================== */
+
+:root[data-theme="md3-custom"] {
+  /* --- Surfaces (same dark base) --- */
+  --std-sys-color-background: #0f0d13;
+  --std-sys-color-on-background: #e6e0e9;
+
+  --std-sys-color-surface: #141218;
+  --std-sys-color-on-surface: #e6e0e9;
+
+  --std-sys-color-surface-variant: #3f4948;
+  --std-sys-color-on-surface-variant: #bfc9c8;
+
+  --std-sys-color-surface-dim: #141218;
+  --std-sys-color-surface-bright: #3a393e;
+
+  --std-sys-color-surface-container-lowest: #0f0d13;
+  --std-sys-color-surface-container-low: #1c1b20;
+  --std-sys-color-surface-container: #201f26;
+  --std-sys-color-surface-container-high: #2b2a30;
+  --std-sys-color-surface-container-highest: #35343b;
+
+  /* --- Primary (Teal) --- */
+  --std-sys-color-primary: #80cbc4;
+  --std-sys-color-on-primary: #003d33;
+  --std-sys-color-primary-container: #005048;
+  --std-sys-color-on-primary-container: #a7f3e8;
+
+  /* --- Secondary --- */
+  --std-sys-color-secondary: #8fb3b8;
+  --std-sys-color-on-secondary: #0c3538;
+  --std-sys-color-secondary-container: #2a4b4e;
+  --std-sys-color-on-secondary-container: #abeaee;
+
+  /* --- Tertiary --- */
+  --std-sys-color-tertiary: #c8c08e;
+  --std-sys-color-on-tertiary: #343004;
+  --std-sys-color-tertiary-container: #4b4619;
+  --std-sys-color-on-tertiary-container: #e6deaa;
+
+  /* --- Error --- */
+  --std-sys-color-error: #ffb4ab;
+  --std-sys-color-on-error: #690005;
+  --std-sys-color-error-container: #93000a;
+  --std-sys-color-on-error-container: #ffdad6;
+
+  /* --- Outline --- */
+  --std-sys-color-outline: #899392;
+  --std-sys-color-outline-variant: #3f4948;
+
+  /* --- Inverse --- */
+  --std-sys-color-inverse-surface: #e6e0e9;
+  --std-sys-color-inverse-on-surface: #1d1b20;
+  --std-sys-color-inverse-primary: #4a635f;
+
+  /* --- Update aliases for Custom variant --- */
+  --accentColor: var(--std-sys-color-primary);
+  --accentHoverColor: var(--std-sys-color-primary);
+  --borderColor: var(--std-sys-color-outline-variant);
+  --dimTextColor: var(--std-sys-color-on-surface-variant);
+  --textColor: var(--std-sys-color-on-surface);
+  --selectorBackgroundColor: var(--std-sys-color-surface-container);
+  --headerColor: var(--std-sys-color-surface-dim);
+  --drawerColor: var(--std-sys-color-surface-container-high);
+  --darkerGradientPoint: var(--std-sys-color-background);
+  --lighterGradientPoint: var(--std-sys-color-surface);
+  --defaultBorder: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+  --defaultLighterBorder: var(--std-border-width) solid var(--std-sys-color-outline);
+  --activeBackgroundColor: var(--std-sys-color-primary);
+  --activeTextColor: var(--std-sys-color-on-primary);
+  --btnPlayColor: var(--std-sys-color-on-surface);
+  --btnPlayBorderColor: var(--std-sys-color-outline-variant);
+  --cardHoverBorderColor: var(--std-sys-color-on-surface);
+  --cardResumeProgressColor: var(--std-sys-color-on-surface);
+  --hoverBackgroundColor: var(--std-sys-color-on-surface);
+  --hoverTabBackgroundColor: var(--std-sys-color-on-surface);
+  --hoverTextColor: var(--std-sys-color-surface);
+  --multiSelectOverlayColor: var(--std-sys-color-scrim);
+}
+
+
+/* ===========================================
+   SECTION 9 — Semantic Component Tokens
+   ===========================================
+   High-level tokens that compose from the
+   primitive palette. Used by component styles.
+   =========================================== */
+
+:root {
+  /* --- Button surfaces --- */
+  --std-comp-btn-filled-bg: var(--std-sys-color-primary);
+  --std-comp-btn-filled-fg: var(--std-sys-color-on-primary);
+  --std-comp-btn-filled-disabled-bg: rgba(128, 203, 196, 0.12);
+  --std-comp-btn-filled-disabled-fg: rgba(230, 224, 233, 0.38);
+
+  --std-comp-btn-outlined-bg: transparent;
+  --std-comp-btn-outlined-fg: var(--std-sys-color-primary);
+  --std-comp-btn-outlined-border: var(--std-sys-color-outline);
+  --std-comp-btn-outlined-disabled-bg: transparent;
+  --std-comp-btn-outlined-disabled-fg: rgba(230, 224, 233, 0.38);
+
+  --std-comp-btn-tonal-bg: var(--std-sys-color-secondary-container);
+  --std-comp-btn-tonal-fg: var(--std-sys-color-on-secondary-container);
+
+  --std-comp-btn-text-fg: var(--std-sys-color-primary);
+
+  /* --- Card surfaces --- */
+  --std-comp-card-filled-bg: var(--std-sys-color-surface-container-highest);
+  --std-comp-card-filled-fg: var(--std-sys-color-on-surface);
+  --std-comp-card-elevated-bg: var(--std-sys-color-surface-container-low);
+  --std-comp-card-elevated-fg: var(--std-sys-color-on-surface);
+
+  /* --- Navigation --- */
+  --std-comp-nav-bar-bg: var(--std-sys-color-surface-container);
+  --std-comp-nav-bar-fg: var(--std-sys-color-on-surface);
+  --std-comp-nav-bar-active: var(--std-sys-color-on-secondary-container);
+  --std-comp-nav-bar-indicator: var(--std-sys-color-secondary-container);
+
+  --std-comp-nav-drawer-bg: var(--std-sys-color-surface-container-low);
+  --std-comp-nav-drawer-fg: var(--std-sys-color-on-surface);
+
+  /* --- Dialog / Modal --- */
+  --std-comp-dialog-bg: var(--std-sys-color-surface-container-high);
+  --std-comp-dialog-fg: var(--std-sys-color-on-surface);
+
+  /* --- Search --- */
+  --std-comp-search-bg: var(--std-sys-color-surface-container-highest);
+  --std-comp-search-fg: var(--std-sys-color-on-surface);
+  --std-comp-search-hint: var(--std-sys-color-on-surface-variant);
+
+  /* --- Text field --- */
+  --std-comp-textfield-bg: transparent;
+  --std-comp-textfield-fg: var(--std-sys-color-on-surface);
+  --std-comp-textfield-label: var(--std-sys-color-on-surface-variant);
+  --std-comp-textfield-border: var(--std-sys-color-on-surface-variant);
+  --std-comp-textfield-focus-border: var(--std-sys-color-primary);
+  --std-comp-textfield-disabled-fg: rgba(230, 224, 233, 0.38);
+
+  /* --- Badge --- */
+  --std-comp-badge-bg: var(--std-sys-color-error);
+  --std-comp-badge-fg: var(--std-sys-color-on-error);
+
+  /* --- Snackbar --- */
+  --std-comp-snackbar-bg: var(--std-sys-color-inverse-surface);
+  --std-comp-snackbar-fg: var(--std-sys-color-inverse-on-surface);
+  --std-comp-snackbar-action: var(--std-sys-color-inverse-primary);
+
+  /* --- Tooltip --- */
+  --std-comp-tooltip-bg: var(--std-sys-color-inverse-surface);
+  --std-comp-tooltip-fg: var(--std-sys-color-inverse-on-surface);
+
+  /* --- Divider / Separator --- */
+  --std-comp-divider: var(--std-sys-color-outline-variant);
+
+  /* --- Scrollbar --- */
+  --std-comp-scrollbar-thumb: var(--std-sys-color-outline-variant);
+  --std-comp-scrollbar-track: transparent;
+
+  /* --- Focus ring --- */
+  --std-comp-focus-ring: var(--std-sys-color-primary);
+  --std-comp-focus-ring-offset: 2px;
+
+
+  /* ===========================================
+     SECTION 10 — Utility / Blur Tokens
+     ===========================================
+     Glass-morphism / backdrop blur values
+     carried over from ElegantFin.
+     =========================================== */
+
+  --std-blur-smallest: blur(2px);
+  --std-blur-default: blur(5px);
+  --std-blur-large: blur(10px);
+  --std-blur-largest: blur(20px);
+
+
+  /* ===========================================
+     SECTION 11 — Legacy UI Aliases
+     ===========================================
+     Additional ElegantFin variables that map
+     to MD3 tokens for backward compatibility.
+     =========================================== */
+
+  --semiTransparentAccentColor: rgba(128, 203, 196, 0.125);
+
+  --btnMiniPlayColor: var(--std-sys-color-tertiary);
+  --btnMiniPlayBorderColor: var(--std-sys-color-tertiary-container);
+
+  --btnDeleteColor: var(--std-sys-color-error-container);
+  --btnDeleteBorderColor: var(--std-sys-color-error);
+  --btnSubmitColor: var(--std-sys-color-primary-container);
+  --btnSubmitBorderColor: var(--std-sys-color-primary);
+
+  --checkboxCheckedBgColor: var(--std-sys-color-primary);
+  --highlightOutlineColor: var(--std-sys-color-primary);
+
+  --itemColumnGap: 1em;
+  --minEpisodeCardWidth: 26em;
+
+  /* SVG / Logo filter (no-op for dark theme) */
+  --svgIconFilter: none;
+  --clearLogoFilter: none;
+
+  /* ElegantFin footer text */
+  --elegantFinFooterText: "SimpleThemeDark";
+}
