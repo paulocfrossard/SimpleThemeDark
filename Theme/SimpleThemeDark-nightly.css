@@ -20,10 +20,6 @@
 
 :root {
   --iconPack: "Material Icons";
-  --fill: 1;
-  --wght: 400;
-  --grad: 0;
-  --opsz: 24;
   color-scheme: dark;
 
   /* --- Surface Colors --- */
@@ -634,11 +630,9 @@ h2 {
   color: var(--std-sys-color-on-primary);
 }
 
-/* Material Symbols icon font */
+/* Material Icons font */
 .material-icons {
-  font-family:
-    var(--iconPack),
-    Material Icons !important;
+  font-family: "Material Icons" !important;
   font-weight: normal;
   font-style: normal;
   line-height: 1;
@@ -653,29 +647,13 @@ h2 {
   font-feature-settings: "liga";
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  font-variation-settings:
-    "FILL" var(--fill),
-    "wght" var(--wght),
-    "GRAD" var(--grad),
-    "opsz" var(--opsz);
-  transition: font-variation-settings var(--std-motion-duration-short4) var(--std-motion-easing-standard);
 }
 
 .material-icons.info_outline:before {
   content: "\e88e";
 }
 
-.detailButton-icon {
-  --fill: 0;
-}
-
-.ratingbutton-icon-withrating,
-.starIcon,
-.cardOverlayButtonIcon,
-.indicatorIcon,
-.cardImageIcon {
-  --fill: 1;
-}
+/* No icon fill overrides needed for Material Icons */
 
 
 /* ===========================================
@@ -1139,10 +1117,10 @@ h2 {
 }
 
 .skinHeader-blurred:not(.osdHeader):not(.semiTransparent) {
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  background-color: rgba(20, 18, 24, 0.85);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background-color: #121216;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  z-index: 100;
 }
 
 .skinHeader-blurred:not(.osdHeader):not(.semiTransparent)::after {
@@ -1155,12 +1133,12 @@ h2 {
 }
 
 .headerTop {
-  -webkit-align-items: center;
+  display: flex;
   align-items: center;
   padding: 0 1em;
-  height: var(--appBarHeight);
-  background: transparent;
-  border-bottom: none;
+  height: 3em;
+  position: relative;
+  z-index: 1;
 }
 
 .layout-desktop .headerTop {
@@ -1338,18 +1316,9 @@ h2 {
 }
 
 .noHomeButtonHeader .emby-tab-button:before {
-  --fill: 0;
-  font-family:
-    var(--iconPack),
-    Material Icons;
+  font-family: "Material Icons";
   font-feature-settings: "liga";
   font-size: 1.2em;
-  font-variation-settings:
-    "FILL" var(--fill),
-    "wght" var(--wght),
-    "GRAD" var(--grad),
-    "opsz" var(--opsz);
-  transition: font-variation-settings var(--std-motion-duration-short4) var(--std-motion-easing-standard);
 }
 
 /* MUI App Bar override */
@@ -3387,8 +3356,6 @@ progress + span {
 }
 
 .sectionTitleTextButton > .chevron_right {
-  --fill: 0;
-  --opsz: 48;
   font-size: 1.5rem;
 }
 
