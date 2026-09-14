@@ -1307,16 +1307,55 @@ h2 {
 /* Header buttons */
 .paper-icon-button-light {
   transition: all var(--std-motion-duration-short3) var(--std-motion-easing-standard) !important;
+  color: var(--std-sys-color-on-surface) !important;
 }
 
 .paper-icon-button-light:hover {
   background-color: rgba(255, 255, 255, 0.08) !important;
+  color: var(--std-sys-color-on-surface) !important;
+}
+
+.paper-icon-button-light:active {
+  background-color: rgba(255, 255, 255, 0.12) !important;
 }
 
 .paper-icon-button-light > .material-icons {
   font-size: 1.25em;
 }
 
+/* All header button types */
+.headerButton,
+.headerBackButton,
+.headerHomeButton,
+.headerSearchButton,
+.headerCastButton,
+.headerSyncButton,
+.mainDrawerButton {
+  color: var(--std-sys-color-on-surface) !important;
+  transition: background-color 150ms ease !important;
+}
+
+.headerButton:hover,
+.headerBackButton:hover,
+.headerHomeButton:hover,
+.headerSearchButton:hover,
+.headerCastButton:hover,
+.headerSyncButton:hover,
+.mainDrawerButton:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.headerButton:active,
+.headerBackButton:active,
+.headerHomeButton:active,
+.headerSearchButton:active,
+.headerCastButton:active,
+.headerSyncButton:active,
+.mainDrawerButton:active {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* User button with avatar */
 .headerUserButton {
   width: 2em;
   height: 2em;
@@ -1325,12 +1364,8 @@ h2 {
   border-radius: var(--std-shape-corner-full);
 }
 
-.headerButton {
-  color: var(--std-sys-color-on-surface) !important;
-}
-
-.headerButton:hover {
-  background-color: rgba(255, 255, 255, 0.08) !important;
+.headerUserButton:hover {
+  border-color: var(--std-sys-color-on-surface) !important;
 }
 
 /* MUI App Bar override - transparent */
@@ -2035,7 +2070,7 @@ progress + span {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   padding: 2em 2em 1em 2em !important;
-  border-radius: var(--std-shape-corner-extra-large);
+  border-radius: 0.3em;
   box-shadow: var(--std-elevation-3);
   box-sizing: border-box;
   transform: translateY(3em);
