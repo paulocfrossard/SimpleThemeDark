@@ -1306,11 +1306,11 @@ h2 {
 
 /* Header buttons */
 .paper-icon-button-light {
-  transition: all var(--std-motion-duration-short3) var(--std-motion-easing-standard);
+  transition: all var(--std-motion-duration-short3) var(--std-motion-easing-standard) !important;
 }
 
 .paper-icon-button-light:hover {
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: rgba(255, 255, 255, 0.08) !important;
 }
 
 .paper-icon-button-light > .material-icons {
@@ -1323,6 +1323,14 @@ h2 {
   margin-inline-end: 1em;
   border: var(--std-border-width) solid var(--std-sys-color-outline-variant);
   border-radius: var(--std-shape-corner-full);
+}
+
+.headerButton {
+  color: var(--std-sys-color-on-surface) !important;
+}
+
+.headerButton:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
 }
 
 /* MUI App Bar override - transparent */
@@ -1339,15 +1347,17 @@ h2 {
 
 .mainDrawer,
 .drawer-open {
-  background-color: var(--std-comp-nav-drawer-bg);
+  background-color: var(--std-sys-color-surface-container-low) !important;
   border-right: var(--std-border-width) solid var(--std-sys-color-outline-variant);
   width: 280px;
-  backdrop-filter: var(--std-blur-large);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 .MuiDrawer-paper {
-  background: var(--std-comp-nav-drawer-bg);
-  backdrop-filter: var(--std-blur-large);
+  background: var(--std-sys-color-surface-container-low) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-right: var(--std-border-width) solid var(--std-sys-color-outline-variant);
   padding: 0.25em;
 }
@@ -1363,16 +1373,27 @@ h2 {
 .navMenuOption {
   border-radius: var(--std-shape-corner-small) !important;
   margin: 0em 1em !important;
+  padding: 0.75em 1em !important;
+  color: var(--std-sys-color-on-surface) !important;
+  transition: background-color 150ms ease !important;
 }
 
-[dir="ltr"] .navMenuOption {
-  padding: 0.75em 1em !important;
-  margin-bottom: unset;
+.navMenuOption:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
 }
 
 .navMenuOption-selected {
   background-color: var(--std-sys-color-primary) !important;
   color: var(--std-sys-color-on-primary) !important;
+}
+
+.sidebarHeader {
+  color: var(--std-sys-color-on-surface-variant) !important;
+  font-size: 0.875em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 1em 1.5em 0.5em;
 }
 
 
@@ -2001,7 +2022,7 @@ progress + span {
   min-height: 100vh;
   padding: 1em;
   overflow-y: auto;
-  background-color: var(--std-sys-color-background);
+  background-color: transparent;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
