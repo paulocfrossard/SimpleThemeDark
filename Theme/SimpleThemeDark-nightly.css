@@ -1320,9 +1320,9 @@ h2 {
 
 /* MUI App Bar override */
 .MuiAppBar-root {
-  background: var(--std-sys-color-surface-container);
-  backdrop-filter: var(--std-blur-default);
-  border-bottom: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+  background: transparent;
+  backdrop-filter: none;
+  border-bottom: none;
 }
 
 
