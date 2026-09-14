@@ -1164,6 +1164,22 @@ h2 {
   border: none !important;
 }
 
+/* Remove ::after overlay on home page header */
+.skinHeader-withBackground:not(.semiTransparent)::after {
+  display: none;
+}
+
+/* Headroom pinned state for home page header */
+.headroom--pinned .skinHeader-withBackground:not(.semiTransparent) {
+  background-color: rgba(20, 18, 24, 0.65) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
+.headroom--pinned .skinHeader-withBackground:not(.semiTransparent)::after {
+  display: none;
+}
+
 .skinHeader.headroom:not(.osdHeader, .noHomeButtonHeader):has(.pageTitle:empty)::after,
 .skinHeader.headroom:not(.osdHeader, .noHomeButtonHeader):has(.pageTitle:empty) {
   --headerBackground: none;
@@ -1707,8 +1723,32 @@ h2 {
   color: var(--std-sys-color-inverse-on-surface) !important;
   background: var(--std-comp-snackbar-bg) !important;
   border: none !important;
-  backdrop-filter: var(--std-blur-default);
-  border-radius: var(--std-shape-corner-small) !important;
+  border-radius: var(--std-shape-corner-extra-small) !important;
+  box-shadow: var(--std-elevation-3);
+  padding: var(--std-space-3-5) var(--std-space-4);
+  min-height: 34px;
+  max-width: 344px;
+  z-index: 9999;
+  font-size: var(--std-typescale-body-medium);
+  line-height: 1.4;
+}
+
+.toast .toastButton,
+.toastContainer .toastButton {
+  color: var(--std-comp-snackbar-action) !important;
+  font-weight: 600;
+  margin-inline-start: var(--std-space-2);
+}
+
+.layout-mobile .toast,
+.layout-mobile .toastContainer {
+  max-width: calc(100vw - 2 * var(--sidePadding));
+  min-width: 20em;
+}
+
+.layout-tv .toast,
+.layout-tv .toastContainer {
+  max-width: 40em;
 }
 
 .upNextContainer {
@@ -1988,11 +2028,11 @@ progress + span {
 
 #loginPage .padded-left.padded-right.padded-bottom-page {
   width: 28em;
-  background: rgba(20, 18, 24, 0.65);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(29, 27, 32, 0.40);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   padding: 2em 2em 1em 2em !important;
-  border-radius: var(--std-shape-corner-medium);
+  border-radius: var(--std-shape-corner-extra-large);
   box-shadow: var(--std-elevation-3);
   box-sizing: border-box;
   transform: translateY(3em);
