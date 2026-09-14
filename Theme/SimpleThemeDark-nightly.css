@@ -882,7 +882,7 @@ h2 {
 
 .innerCardFooter,
 .chapterThumbTextContainer {
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.8), 40%, transparent);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.8), 40%, transparent);
   padding: 0em 2em 2em 2em;
   align-content: end;
   display: grid;
@@ -1368,6 +1368,35 @@ h2 {
   border-color: var(--std-sys-color-on-surface) !important;
 }
 
+/* Home and Favorites tab buttons in header */
+.headerTabs .emby-tab-button,
+.headerLeft .emby-tab-button {
+  color: var(--std-sys-color-on-surface) !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0.5em 1em !important;
+  margin: 0 !important;
+  border-radius: var(--std-shape-corner-small) !important;
+  font-weight: 500 !important;
+  transition: all 150ms ease !important;
+}
+
+.headerTabs .emby-tab-button:hover,
+.headerLeft .emby-tab-button:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.headerTabs .emby-tab-button-active,
+.headerLeft .emby-tab-button-active {
+  color: var(--std-sys-color-primary) !important;
+  background-color: rgba(128, 203, 196, 0.12) !important;
+}
+
+.headerTabs .emby-tab-button.show-focus:focus,
+.headerLeft .emby-tab-button.show-focus:focus {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
 /* MUI App Bar override - transparent */
 .MuiAppBar-root {
   background: transparent !important;
@@ -1519,7 +1548,7 @@ h2 {
 .btnPlay.detailButton {
   background-color: var(--std-sys-color-primary);
   color: var(--std-sys-color-on-primary);
-  border-radius: var(--std-shape-corner-full);
+  border-radius: 0.3em;
   border: none;
   height: 3em;
   min-width: 10em;
