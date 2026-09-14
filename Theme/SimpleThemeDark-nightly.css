@@ -232,7 +232,7 @@
      =========================================== */
 
   /* --- Add-on required aliases (keep as-is) --- */
-  --appBarHeight: 5em;
+  --appBarHeight: 3.5em;
   --sidePadding: 3.3%;
   --defaultBorder: var(--std-border-width) solid var(--std-sys-color-outline-variant);
   --largerRadius: var(--std-shape-corner-extra-large);
@@ -1111,10 +1111,11 @@ h2 {
 }
 
 .skinHeader-blurred:not(.osdHeader):not(.semiTransparent) {
-  background-color: #121216;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: var(--std-sys-color-surface-container);
+  border-bottom: var(--std-border-width) solid var(--std-sys-color-outline-variant);
   position: relative;
   z-index: 100;
+  backdrop-filter: var(--std-blur-smallest);
 }
 
 .skinHeader-blurred:not(.osdHeader):not(.semiTransparent)::after {
@@ -1191,7 +1192,7 @@ h2 {
 .sectionTabs {
   display: inline-grid;
   height: var(--appBarHeight);
-  padding-bottom: var(--appBarTabsPadding, 1.5em);
+  padding-bottom: var(--appBarTabsPadding, 0.5em);
 }
 
 .layout-mobile .sectionTabs {
@@ -1965,7 +1966,7 @@ progress + span {
   width: 28em;
   background: var(--std-sys-color-surface-container-high);
   padding: 2em 2em 1em 2em !important;
-  border-radius: var(--std-shape-corner-extra-large);
+  border-radius: var(--std-shape-corner-medium);
   box-shadow: var(--std-elevation-3);
   box-sizing: border-box;
   transform: translateY(3em);
