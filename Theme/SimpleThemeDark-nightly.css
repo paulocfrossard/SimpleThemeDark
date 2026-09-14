@@ -1301,17 +1301,7 @@ h2 {
   border-radius: var(--std-shape-corner-full);
 }
 
-.noHomeButtonHeader .emby-tab-button[data-index="1"]:before {
-  content: "favorite";
-}
-
-.noHomeButtonHeader .emby-tab-button[data-index="0"]:before {
-  content: "home";
-}
-
-.noHomeButtonHeader .emby-tab-button:before {
-  font-size: 1.2em;
-}
+/* Home/Fav icons handled by Jellyfin natively via .material-icons spans */
 
 /* MUI App Bar override */
 .MuiAppBar-root {
@@ -2261,17 +2251,7 @@ progress + span {
   color: transparent;
 }
 
-.overview-expand.emby-button:after {
-  content: "keyboard_arrow_down";
-  background: var(--std-sys-color-surface-container);
-  border-radius: 50%;
-  width: 1.5em;
-  height: 1.5em;
-  align-content: center;
-  line-height: 1.6ch;
-  transition: transform var(--std-motion-duration-medium4) var(--std-motion-easing-standard);
-  color: var(--std-sys-color-on-surface);
-}
+/* Overview expand icon handled by Jellyfin natively */
 
 .overview.detail-clamp-text ~ .overview-controls .overview-expand:after {
   transform: rotateZ(0deg);
@@ -3347,9 +3327,7 @@ progress + span {
   font-size: 1.5rem;
 }
 
-.sectionTitleTextButton > .chevron_right::before {
-  content: "arrow_circle_right";
-}
+/* Chevron icon handled by Jellyfin natively via .material-icons */
 
 .verticalSection:not(:empty) {
   margin-top: 0.5em;
