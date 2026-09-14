@@ -1110,6 +1110,7 @@ h2 {
   color: var(--std-sys-color-on-surface);
 }
 
+/* Base header - transparent on all pages */
 .skinHeader-blurred:not(.osdHeader):not(.semiTransparent) {
   background: transparent !important;
   border-bottom: none !important;
@@ -1117,15 +1118,53 @@ h2 {
   z-index: 100;
 }
 
+/* Remove any ::after pseudo-elements */
 .skinHeader-blurred:not(.osdHeader):not(.semiTransparent)::after {
-  display: none;
+  display: none !important;
 }
 
+/* Home page header - no semiTransparent class */
+.skinHeader-withBackground:not(.semiTransparent) {
+  --headerBackground: none;
+  backdrop-filter: none;
+  background-color: transparent !important;
+  border: none !important;
+}
+
+/* Home page ::after removal */
+.skinHeader-withBackground:not(.semiTransparent)::after {
+  display: none !important;
+}
+
+/* Headroom pinned state - semi-transparent when scrolling */
+.headroom--pinned .skinHeader-blurred:not(.osdHeader):not(.semiTransparent) {
+  background-color: rgba(20, 18, 24, 0.85) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+}
+
+.headroom--pinned .skinHeader-blurred:not(.osdHeader):not(.semiTransparent)::after {
+  display: none !important;
+}
+
+/* Headroom pinned for home page */
+.headroom--pinned .skinHeader-withBackground:not(.semiTransparent) {
+  background-color: rgba(20, 18, 24, 0.85) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+}
+
+.headroom--pinned .skinHeader-withBackground:not(.semiTransparent)::after {
+  display: none !important;
+}
+
+/* Layout mobile */
 .layout-mobile .skinHeader-blurred:not(.osdHeader),
 .layout-mobile .withSectionTabs .headerTop {
   padding: 0;
 }
 
+/* Header top */
 .headerTop {
   display: flex;
   align-items: center;
@@ -1148,7 +1187,7 @@ h2 {
   max-height: var(--appBarHeight);
 }
 
-/* Transparent header (detail pages) */
+/* Transparent header (detail pages with semiTransparent) */
 .skinHeader-withBackground.semiTransparent {
   --headerBackground: none;
   backdrop-filter: none;
@@ -1156,51 +1195,7 @@ h2 {
   border: none;
 }
 
-/* Home page — no semiTransparent class, but still needs transparent header */
-.skinHeader-withBackground:not(.semiTransparent) {
-  --headerBackground: none;
-  backdrop-filter: none;
-  background-color: transparent !important;
-  border: none !important;
-}
-
-/* Remove ::after overlay on home page header */
-.skinHeader-withBackground:not(.semiTransparent)::after {
-  display: none;
-}
-
-/* Headroom pinned state for home page header */
-.headroom--pinned .skinHeader-withBackground:not(.semiTransparent) {
-  background-color: rgba(20, 18, 24, 0.65) !important;
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
-}
-
-.headroom--pinned .skinHeader-withBackground:not(.semiTransparent)::after {
-  display: none;
-}
-
-.skinHeader.headroom:not(.osdHeader, .noHomeButtonHeader):has(.pageTitle:empty)::after,
-.skinHeader.headroom:not(.osdHeader, .noHomeButtonHeader):has(.pageTitle:empty) {
-  --headerBackground: none;
-  backdrop-filter: none;
-  background-color: transparent;
-  border: none;
-}
-
-.skinHeader-withBackground.semiTransparent .headerButton:not(:hover),
-.skinHeader.headroom:not(.osdHeader, .noHomeButtonHeader):has(.pageTitle:empty) .headerButton:not(:hover) {
-  color: var(--std-sys-color-on-surface);
-}
-
-.skinHeader-withBackground:not(.semiTransparent) .headerHomeButton {
-  display: none;
-}
-
-.layout-mobile:has(#itemDetailPage:not(.hide)) .headerHomeButton {
-  display: block;
-}
-
+/* Page title */
 .pageTitle {
   height: 1.5em;
 }
@@ -1309,17 +1304,6 @@ h2 {
   transition: transform var(--std-motion-duration-medium4) var(--std-motion-easing-standard);
 }
 
-/* Scroll-pinned: solid background replaces transparent gradient */
-.headroom--pinned .skinHeader-blurred:not(.osdHeader):not(.semiTransparent) {
-  background-color: rgba(20, 18, 24, 0.95);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
-.headroom--pinned .skinHeader-blurred:not(.osdHeader):not(.semiTransparent)::after {
-  display: none;
-}
-
 /* Header buttons */
 .paper-icon-button-light {
   transition: all var(--std-motion-duration-short3) var(--std-motion-easing-standard);
@@ -1341,13 +1325,11 @@ h2 {
   border-radius: var(--std-shape-corner-full);
 }
 
-/* Home/Fav icons handled by Jellyfin natively via .material-icons spans */
-
-/* MUI App Bar override */
+/* MUI App Bar override - transparent */
 .MuiAppBar-root {
-  background: transparent;
-  backdrop-filter: none;
-  border-bottom: none;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  border-bottom: none !important;
 }
 
 
@@ -2028,7 +2010,7 @@ progress + span {
 
 #loginPage .padded-left.padded-right.padded-bottom-page {
   width: 28em;
-  background: rgba(29, 27, 32, 0.40);
+  background: rgba(29, 27, 32, 0.65);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   padding: 2em 2em 1em 2em !important;
