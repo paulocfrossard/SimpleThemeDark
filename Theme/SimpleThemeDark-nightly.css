@@ -1111,8 +1111,8 @@ h2 {
 }
 
 .skinHeader-blurred:not(.osdHeader):not(.semiTransparent) {
-  background: transparent;
-  border-bottom: none;
+  background: transparent !important;
+  border-bottom: none !important;
   position: relative;
   z-index: 100;
 }
@@ -1133,6 +1133,7 @@ h2 {
   height: 3em;
   position: relative;
   z-index: 1;
+  background: transparent !important;
 }
 
 .layout-desktop .headerTop {
@@ -1153,6 +1154,14 @@ h2 {
   backdrop-filter: none;
   background-color: transparent;
   border: none;
+}
+
+/* Home page — no semiTransparent class, but still needs transparent header */
+.skinHeader-withBackground:not(.semiTransparent) {
+  --headerBackground: none;
+  backdrop-filter: none;
+  background-color: transparent !important;
+  border: none !important;
 }
 
 .skinHeader.headroom:not(.osdHeader, .noHomeButtonHeader):has(.pageTitle:empty)::after,
@@ -1694,15 +1703,16 @@ h2 {
 }
 
 .toast,
-.upNextContainer {
-  color: var(--std-sys-color-on-inverse-surface);
+.toastContainer {
+  color: var(--std-sys-color-inverse-on-surface) !important;
   background: var(--std-comp-snackbar-bg) !important;
   border: none !important;
   backdrop-filter: var(--std-blur-default);
+  border-radius: var(--std-shape-corner-small) !important;
 }
 
-.toast {
-  border-radius: var(--std-shape-corner-small);
+.upNextContainer {
+  color: var(--std-sys-color-on-surface);
 }
 
 /* Skip button */
@@ -1978,7 +1988,9 @@ progress + span {
 
 #loginPage .padded-left.padded-right.padded-bottom-page {
   width: 28em;
-  background: var(--std-sys-color-surface-container-high);
+  background: rgba(20, 18, 24, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   padding: 2em 2em 1em 2em !important;
   border-radius: var(--std-shape-corner-medium);
   box-shadow: var(--std-elevation-3);
