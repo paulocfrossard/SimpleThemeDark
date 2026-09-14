@@ -1111,15 +1111,27 @@ h2 {
 }
 
 .skinHeader-blurred:not(.osdHeader):not(.semiTransparent) {
-  background-color: var(--std-sys-color-surface-container);
-  border-bottom: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+  background: transparent;
+  border-bottom: none;
   position: relative;
   z-index: 100;
-  backdrop-filter: var(--std-blur-smallest);
 }
 
 .skinHeader-blurred:not(.osdHeader):not(.semiTransparent)::after {
-  display: none;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 15, 0.8) 0%,
+    rgba(10, 10, 15, 0.4) 60%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: -1;
 }
 
 .layout-mobile .skinHeader-blurred:not(.osdHeader),
@@ -1285,9 +1297,24 @@ h2 {
   transition: transform var(--std-motion-duration-medium4) var(--std-motion-easing-standard);
 }
 
+/* Scroll-pinned: solid background replaces transparent gradient */
+.headroom--pinned .skinHeader-blurred:not(.osdHeader):not(.semiTransparent) {
+  background-color: rgba(20, 18, 24, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.headroom--pinned .skinHeader-blurred:not(.osdHeader):not(.semiTransparent)::after {
+  display: none;
+}
+
 /* Header buttons */
 .paper-icon-button-light {
   transition: all var(--std-motion-duration-short3) var(--std-motion-easing-standard);
+}
+
+.paper-icon-button-light:hover {
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
 .paper-icon-button-light > .material-icons {
