@@ -1116,11 +1116,13 @@ h2 {
   border-bottom: none !important;
   position: relative;
   z-index: 100;
+  pointer-events: auto !important;
 }
 
 /* Remove any ::after pseudo-elements */
 .skinHeader-blurred:not(.osdHeader):not(.semiTransparent)::after {
   display: none !important;
+  pointer-events: none !important;
 }
 
 /* Home page header - no semiTransparent class */
@@ -1129,11 +1131,13 @@ h2 {
   backdrop-filter: none;
   background-color: transparent !important;
   border: none !important;
+  pointer-events: auto !important;
 }
 
 /* Home page ::after removal */
 .skinHeader-withBackground:not(.semiTransparent)::after {
   display: none !important;
+  pointer-events: none !important;
 }
 
 /* Headroom pinned state - semi-transparent when scrolling */
@@ -1435,7 +1439,7 @@ h2 {
 }
 
 .navMenuOption {
-  border-radius: var(--std-shape-corner-small) !important;
+  border-radius: 0 !important;
   margin: 0em 1em !important;
   padding: 0.75em 1em !important;
   color: var(--std-sys-color-on-surface) !important;
@@ -2150,19 +2154,25 @@ progress + span {
    =========================================== */
 
 .detailPageWrapperContainer {
-  padding-top: unset;
-  margin-top: unset;
+  padding-top: 0;
+  margin-top: 0;
 }
 
 .layout-desktop .detailPageWrapperContainer {
-  min-height: 46vh;
+  min-height: 60vh;
   background: transparent;
+  display: flex;
+  flex-direction: column;
 }
 
 .layout-tv .detailPageWrapperContainer {
   padding-left: 30vw;
-  min-height: 46vh;
+  min-height: 60vh;
   background: transparent;
+}
+
+.layout-mobile .detailPageWrapperContainer {
+  padding-top: 0;
 }
 
 .detailPagePrimaryContainer {
@@ -3608,15 +3618,22 @@ progress + span {
   margin-bottom: 0em;
 }
 
-.listItem,
-.navMenuOption {
+.listItem {
   border-radius: var(--std-shape-corner-small);
 }
 
-.listItem:hover,
-.navMenuOption:hover {
+.navMenuOption {
+  border-radius: 0;
+}
+
+.listItem:hover {
   background: unset;
   border-radius: var(--std-shape-corner-small);
+}
+
+.navMenuOption:hover {
+  background: unset;
+  border-radius: 0;
 }
 
 .listItem:focus {
