@@ -155,7 +155,7 @@
   --std-shape-corner-none: 0;
   --std-shape-corner-extra-small: 4px;
   --std-shape-corner-small: 8px;
-  --std-shape-corner-medium: 0.15em; /* 2.4px @ 16base — user choice */
+  --std-shape-corner-medium: 0.2em; /* Match Jellyfin $card-borderRadius */
   --std-shape-corner-large: 16px;
   --std-shape-corner-extra-large: 28px;
   --std-shape-corner-full: 9999px;
@@ -1110,6 +1110,21 @@ h2 {
   color: var(--std-sys-color-on-surface);
 }
 
+/* Header clickability fixes */
+.skinHeader,
+.skinHeader *,
+.skinHeader *::before,
+.skinHeader *::after {
+  pointer-events: auto !important;
+}
+
+/* Remove any overlay that might block clicks */
+.skinHeader-blurred::before,
+.skinHeader-withBackground::before {
+  display: none !important;
+  pointer-events: none !important;
+}
+
 /* Base header - transparent on all pages */
 .skinHeader-blurred:not(.osdHeader):not(.semiTransparent) {
   background: transparent !important;
@@ -1168,14 +1183,14 @@ h2 {
   padding: 0;
 }
 
-/* Header top */
+/* Ensure headerTop is above any overlay */
 .headerTop {
   display: flex;
   align-items: center;
   padding: 0 1em;
   height: 3em;
   position: relative;
-  z-index: 1;
+  z-index: 101 !important;
   background: transparent !important;
 }
 
@@ -1399,6 +1414,23 @@ h2 {
 .headerTabs .emby-tab-button.show-focus:focus,
 .headerLeft .emby-tab-button.show-focus:focus {
   background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Ensure all header buttons are clickable */
+.headerButton,
+.headerBackButton,
+.headerHomeButton,
+.headerSearchButton,
+.headerCastButton,
+.headerSyncButton,
+.mainDrawerButton,
+.paper-icon-button-light,
+.headerUserButton,
+.headerLeft,
+.headerRight {
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 102 !important;
 }
 
 /* MUI App Bar override - transparent */
