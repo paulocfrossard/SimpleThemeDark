@@ -880,9 +880,10 @@ h2 {
   box-sizing: border-box;
 }
 
+/* Card footer - solid dark overlay */
 .innerCardFooter,
 .chapterThumbTextContainer {
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.8), 40%, transparent);
+  background: rgba(0, 0, 0, 0.65);
   padding: 0em 2em 2em 2em;
   align-content: end;
   display: grid;
@@ -1111,52 +1112,40 @@ h2 {
   color: var(--std-sys-color-on-surface);
 }
 
-/* Header clickability fixes */
-.skinHeader,
-.skinHeader *,
-.skinHeader *::before,
-.skinHeader *::after {
+/* Header clickability - comprehensive fix */
+.skinHeader {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999 !important;
   pointer-events: auto !important;
 }
 
-/* Remove any overlay that might block clicks */
-.skinHeader-blurred::before,
-.skinHeader-withBackground::before {
-  display: none !important;
-  pointer-events: none !important;
+.skinHeader * {
+  pointer-events: auto !important;
 }
 
-/* Base header - transparent on all pages */
 .skinHeader-blurred:not(.osdHeader):not(.semiTransparent) {
   background: transparent !important;
   border-bottom: none !important;
-  position: relative;
-  z-index: 999;
-  pointer-events: auto !important;
 }
 
-/* Remove any ::after pseudo-elements */
 .skinHeader-blurred:not(.osdHeader):not(.semiTransparent)::after {
   display: none !important;
   pointer-events: none !important;
 }
 
-/* Home page header - no semiTransparent class */
 .skinHeader-withBackground:not(.semiTransparent) {
-  --headerBackground: none;
-  backdrop-filter: none;
   background-color: transparent !important;
   border: none !important;
-  pointer-events: auto !important;
 }
 
-/* Home page ::after removal */
 .skinHeader-withBackground:not(.semiTransparent)::after {
   display: none !important;
   pointer-events: none !important;
 }
 
-/* Headroom pinned state - semi-transparent when scrolling */
 .headroom--pinned .skinHeader-blurred:not(.osdHeader):not(.semiTransparent) {
   background-color: rgba(20, 18, 24, 0.85) !important;
   backdrop-filter: blur(20px) !important;
@@ -1167,7 +1156,6 @@ h2 {
   display: none !important;
 }
 
-/* Headroom pinned for home page */
 .headroom--pinned .skinHeader-withBackground:not(.semiTransparent) {
   background-color: rgba(20, 18, 24, 0.85) !important;
   backdrop-filter: blur(20px) !important;
@@ -1178,21 +1166,14 @@ h2 {
   display: none !important;
 }
 
-/* Layout mobile */
-.layout-mobile .skinHeader-blurred:not(.osdHeader),
-.layout-mobile .withSectionTabs .headerTop {
-  padding: 0;
-}
-
-/* Ensure headerTop is above any overlay */
 .headerTop {
   display: flex;
   align-items: center;
   padding: 0 1em;
   height: 3em;
   position: relative;
-  z-index: 101 !important;
-  background: transparent !important;
+  z-index: 100 !important;
+  pointer-events: auto !important;
 }
 
 .layout-desktop .headerTop {
@@ -1324,100 +1305,7 @@ h2 {
   transition: transform var(--std-motion-duration-medium4) var(--std-motion-easing-standard);
 }
 
-/* Header buttons */
-.paper-icon-button-light {
-  transition: all var(--std-motion-duration-short3) var(--std-motion-easing-standard) !important;
-  color: var(--std-sys-color-on-surface) !important;
-}
-
-.paper-icon-button-light:hover {
-  background-color: rgba(255, 255, 255, 0.08) !important;
-  color: var(--std-sys-color-on-surface) !important;
-}
-
-.paper-icon-button-light:active {
-  background-color: rgba(255, 255, 255, 0.12) !important;
-}
-
-.paper-icon-button-light > .material-icons {
-  font-size: 1.25em;
-}
-
-/* All header button types */
-.headerButton,
-.headerBackButton,
-.headerHomeButton,
-.headerSearchButton,
-.headerCastButton,
-.headerSyncButton,
-.mainDrawerButton {
-  color: var(--std-sys-color-on-surface) !important;
-  transition: background-color 150ms ease !important;
-}
-
-.headerButton:hover,
-.headerBackButton:hover,
-.headerHomeButton:hover,
-.headerSearchButton:hover,
-.headerCastButton:hover,
-.headerSyncButton:hover,
-.mainDrawerButton:hover {
-  background-color: rgba(255, 255, 255, 0.08) !important;
-}
-
-.headerButton:active,
-.headerBackButton:active,
-.headerHomeButton:active,
-.headerSearchButton:active,
-.headerCastButton:active,
-.headerSyncButton:active,
-.mainDrawerButton:active {
-  background-color: rgba(255, 255, 255, 0.12) !important;
-}
-
-/* User button with avatar */
-.headerUserButton {
-  width: 2em;
-  height: 2em;
-  margin-inline-end: 1em;
-  border: var(--std-border-width) solid var(--std-sys-color-outline-variant);
-  border-radius: var(--std-shape-corner-full);
-}
-
-.headerUserButton:hover {
-  border-color: var(--std-sys-color-on-surface) !important;
-}
-
-/* Home and Favorites tab buttons in header */
-.headerTabs .emby-tab-button,
-.headerLeft .emby-tab-button {
-  color: var(--std-sys-color-on-surface) !important;
-  background: transparent !important;
-  border: none !important;
-  padding: 0.5em 1em !important;
-  margin: 0 !important;
-  border-radius: var(--std-shape-corner-small) !important;
-  font-weight: 500 !important;
-  transition: all 150ms ease !important;
-}
-
-.headerTabs .emby-tab-button:hover,
-.headerLeft .emby-tab-button:hover {
-  background-color: rgba(255, 255, 255, 0.08) !important;
-}
-
-.headerTabs .emby-tab-button-active,
-.headerLeft .emby-tab-button-active {
-  color: var(--std-sys-color-primary) !important;
-  background-color: rgba(128, 203, 196, 0.12) !important;
-}
-
-.headerTabs .emby-tab-button.show-focus:focus,
-.headerLeft .emby-tab-button.show-focus:focus {
-  background-color: rgba(255, 255, 255, 0.12) !important;
-}
-
-/* Ensure all header buttons are clickable */
+/* All header buttons - force clickable */
 .headerButton,
 .headerBackButton,
 .headerHomeButton,
@@ -1426,15 +1314,34 @@ h2 {
 .headerSyncButton,
 .mainDrawerButton,
 .paper-icon-button-light,
-.headerUserButton,
-.headerLeft,
-.headerRight {
+.headerUserButton {
   pointer-events: auto !important;
+  cursor: pointer !important;
   position: relative;
-  z-index: 102 !important;
+  z-index: 101 !important;
 }
 
-/* MUI App Bar override - transparent */
+.paper-icon-button-light {
+  transition: all var(--std-motion-duration-short3) var(--std-motion-easing-standard) !important;
+  color: var(--std-sys-color-on-surface) !important;
+}
+
+.paper-icon-button-light:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.paper-icon-button-light > .material-icons {
+  font-size: 1.25em;
+}
+
+.headerUserButton {
+  width: 2em;
+  height: 2em;
+  margin-inline-end: 1em;
+  border: var(--std-border-width) solid var(--std-sys-color-outline-variant);
+  border-radius: var(--std-shape-corner-full);
+}
+
 .MuiAppBar-root {
   background: transparent !important;
   backdrop-filter: none !important;
