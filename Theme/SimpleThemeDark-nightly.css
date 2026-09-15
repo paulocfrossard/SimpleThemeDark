@@ -289,34 +289,34 @@
 
   /* Teal accent (default) */
   /* Applied above in SECTION 1 — no override needed */
+}
 
-  /* Purple accent (alternative) */
-  :root[data-accent="purple"] {
-    --std-sys-color-primary: #d0bcff;
-    --std-sys-color-on-primary: #381e72;
-    --std-sys-color-primary-container: #4f378b;
-    --std-sys-color-on-primary-container: #eaddff;
+/* Purple accent (alternative) */
+:root[data-accent="purple"] {
+  --std-sys-color-primary: #d0bcff;
+  --std-sys-color-on-primary: #381e72;
+  --std-sys-color-primary-container: #4f378b;
+  --std-sys-color-on-primary-container: #eaddff;
 
-    --std-sys-color-secondary: #ccc2dc;
-    --std-sys-color-on-secondary: #332d41;
-    --std-sys-color-secondary-container: #4a4458;
-    --std-sys-color-on-secondary-container: #e8def8;
+  --std-sys-color-secondary: #ccc2dc;
+  --std-sys-color-on-secondary: #332d41;
+  --std-sys-color-secondary-container: #4a4458;
+  --std-sys-color-on-secondary-container: #e8def8;
 
-    --std-sys-color-tertiary: #efb8c8;
-    --std-sys-color-on-tertiary: #492532;
-    --std-sys-color-tertiary-container: #633b48;
-    --std-sys-color-on-tertiary-container: #ffd8e4;
+  --std-sys-color-tertiary: #efb8c8;
+  --std-sys-color-on-tertiary: #492532;
+  --std-sys-color-tertiary-container: #633b48;
+  --std-sys-color-on-tertiary-container: #ffd8e4;
 
-    /* Update aliases for purple variant */
-    --accentColor: var(--std-sys-color-primary);
-    --accentHoverColor: var(--std-sys-color-primary);
-    --activeBackgroundColor: var(--std-sys-color-primary);
-    --activeTextColor: var(--std-sys-color-on-primary);
-    --btnSubmitColor: var(--std-sys-color-primary-container);
-    --btnSubmitBorderColor: var(--std-sys-color-primary);
-    --checkboxCheckedBgColor: var(--std-sys-color-primary);
-    --highlightOutlineColor: var(--std-sys-color-primary);
-  }
+  /* Update aliases for purple variant */
+  --accentColor: var(--std-sys-color-primary);
+  --accentHoverColor: var(--std-sys-color-primary);
+  --activeBackgroundColor: var(--std-sys-color-primary);
+  --activeTextColor: var(--std-sys-color-on-primary);
+  --btnSubmitColor: var(--std-sys-color-primary-container);
+  --btnSubmitBorderColor: var(--std-sys-color-primary);
+  --checkboxCheckedBgColor: var(--std-sys-color-primary);
+  --highlightOutlineColor: var(--std-sys-color-primary);
 }
 
 
@@ -596,7 +596,6 @@
 html,
 body,
 .nowPlayingPlaylist,
-.nowPlayingContextMenu,
 .backgroundContainer:not(.withBackdrop),
 .backgroundContainer:not(.backgroundContainer-transparent),
 .backdropContainer {
@@ -722,10 +721,6 @@ h2 {
 .card-hoverable:hover .visualCardBox .cardScalable {
   border-color: var(--std-sys-color-outline-variant) !important;
   box-shadow: var(--std-elevation-1);
-}
-
-.card-hoverable:hover .cardImageContainer {
-  transform: scale(1.025);
 }
 
 .card-hoverable .itemSelectionPanel {
@@ -1079,11 +1074,6 @@ h2 {
   font-weight: 900;
 }
 
-.emby-checkbox:focus:not(:checked) + span + .checkboxOutline {
-  border-color: var(--std-comp-focus-ring) !important;
-  outline: none;
-}
-
 .emby-checkbox:focus + span + .checkboxOutline {
   border-color: var(--std-comp-focus-ring) !important;
   outline: none;
@@ -1107,25 +1097,14 @@ h2 {
    =========================================== */
 
 .skinHeader {
-  position: fixed;
-  padding-top: max(env(safe-area-inset-top), var(--safe-area-inset-top)) !important;
-  color: var(--std-sys-color-on-surface);
-  contain: none !important;
-}
-
-/* Header clickability - comprehensive fix */
-.skinHeader {
   position: fixed !important;
   top: 0;
   left: 0;
   right: 0;
+  padding-top: max(env(safe-area-inset-top), var(--safe-area-inset-top)) !important;
+  color: var(--std-sys-color-on-surface);
   z-index: 999 !important;
-  pointer-events: auto !important;
   contain: none !important;
-}
-
-.skinHeader * {
-  pointer-events: auto !important;
 }
 
 .skinHeader-blurred:not(.osdHeader):not(.semiTransparent) {
@@ -1133,19 +1112,9 @@ h2 {
   border-bottom: none !important;
 }
 
-.skinHeader-blurred:not(.osdHeader):not(.semiTransparent)::after {
-  display: none !important;
-  pointer-events: none !important;
-}
-
 .skinHeader-withBackground:not(.semiTransparent) {
   background-color: transparent !important;
   border: none !important;
-}
-
-.skinHeader-withBackground:not(.semiTransparent)::after {
-  display: none !important;
-  pointer-events: none !important;
 }
 
 .headroom--pinned .skinHeader-blurred:not(.osdHeader):not(.semiTransparent) {
@@ -1154,18 +1123,10 @@ h2 {
   -webkit-backdrop-filter: blur(20px) !important;
 }
 
-.headroom--pinned .skinHeader-blurred:not(.osdHeader):not(.semiTransparent)::after {
-  display: none !important;
-}
-
 .headroom--pinned .skinHeader-withBackground:not(.semiTransparent) {
   background-color: rgba(20, 18, 24, 0.85) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
-}
-
-.headroom--pinned .skinHeader-withBackground:not(.semiTransparent)::after {
-  display: none !important;
 }
 
 .headerTop {
@@ -1325,21 +1286,7 @@ h2 {
   transition: transform var(--std-motion-duration-medium4) var(--std-motion-easing-standard);
 }
 
-/* All header buttons - force clickable */
-.headerButton,
-.headerBackButton,
-.headerHomeButton,
-.headerSearchButton,
-.headerCastButton,
-.headerSyncButton,
-.mainDrawerButton,
-.paper-icon-button-light,
-.headerUserButton {
-  pointer-events: auto !important;
-  cursor: pointer !important;
-  position: relative;
-  z-index: 101 !important;
-}
+
 
 .paper-icon-button-light {
   transition: all var(--std-motion-duration-short3) var(--std-motion-easing-standard) !important;
@@ -1435,7 +1382,6 @@ h2 {
 
 /* MD3 Filled button — 4px radius */
 .emby-button.block,
-.button-alt,
 .raised,
 .raised:focus,
 .manageRecordingButton,
@@ -1450,7 +1396,6 @@ h2 {
 }
 
 .emby-button.block:hover,
-.button-alt:hover,
 .raised:hover,
 .manageRecordingButton:hover,
 .dashboardActionsContainer > .emby-button:hover {
@@ -1623,9 +1568,7 @@ h2 {
 
 /* Delete / submit buttons */
 #btnDeleteImage,
-.button-delete,
-.btnRevoke,
-#btnShutdown {
+.button-delete {
   background: var(--std-sys-color-error-container) !important;
   border: solid var(--std-sys-color-error) var(--std-border-width);
   color: var(--std-sys-color-on-error-container) !important;
@@ -1764,12 +1707,7 @@ h2 {
   line-height: 1.4;
 }
 
-.toast .toastButton,
-.toastContainer .toastButton {
-  color: var(--std-comp-snackbar-action) !important;
-  font-weight: 600;
-  margin-inline-start: var(--std-space-2);
-}
+
 
 .layout-mobile .toast,
 .layout-mobile .toastContainer {
@@ -2034,9 +1972,7 @@ progress + span {
   color: var(--std-sys-color-primary) !important;
 }
 
-#divRunningTasks progress {
-  width: calc(100% - 7em);
-}
+
 
 
 /* ===========================================
@@ -2104,9 +2040,7 @@ progress + span {
   justify-content: center;
 }
 
-#txtLoginDisclaimer {
-  resize: none;
-}
+
 
 
 /* ===========================================
@@ -2461,10 +2395,6 @@ progress + span {
   margin-bottom: 1.5em;
 }
 
-.detailPageContent {
-  gap: 1em;
-}
-
 .detailSectionContent {
   order: 1;
   grid-column: 1 / -1;
@@ -2510,14 +2440,8 @@ progress + span {
 .layout-tv .nextUpSection,
 .layout-tv .detailSection > #listChildrenCollapsible,
 .collectionItems,
-.programGuideSection,
-.series-episodes-section,
-.series-episodes-section ~ #listChildrenCollapsible {
+.programGuideSection {
   grid-column: 1 / -1;
-}
-
-.series-episodes-section {
-  order: 4;
 }
 
 .collectionItems {
@@ -2696,7 +2620,7 @@ progress + span {
 .layout-desktop .itemExternalLinks > a[title*="Bazarr"]:hover,
 .itemExternalLinks > a[title*="Bazarr"]:active {
   background-color: var(--std-sys-color-on-surface) !important;
-  color: var(--std-sys-color-on-surface) !important;
+  color: var(--std-sys-color-surface) !important;
 }
 
 .itemTags,
@@ -3311,12 +3235,12 @@ progress + span {
 }
 
 /* Items container */
-.itemsContainer:not(.editorsChoiceItemsContainer, .vertical-list) {
+.itemsContainer:not(.vertical-list) {
   column-gap: var(--itemColumnGap);
   row-gap: 1em;
 }
 
-.layout-mobile .itemsContainer:not(.editorsChoiceItemsContainer, .vertical-wrap, .vertical-list)::after {
+.layout-mobile .itemsContainer:not(.vertical-wrap, .vertical-list)::after {
   content: "13";
   color: transparent;
 }
@@ -3457,15 +3381,9 @@ progress + span {
 }
 
 /* Content padding */
-[dir="ltr"] .detailPageContent,
 .content-primary {
   padding-left: var(--sidePadding) !important;
   padding-right: var(--sidePadding) !important;
-}
-
-[dir="ltr"] .detailPageContent > .detailPagePrimaryContent {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
 }
 
 #itemDetailPage .verticalSection .itemsContainer.padded-right {
@@ -3517,12 +3435,12 @@ progress + span {
   border: var(--std-border-width) solid var(--std-sys-color-outline-variant);
 }
 
-[dir="ltr"] .listItem:not(.actionSheetMenuItem, .childrenItemsContainer .listItem, .activityLogListWidget .listItem) {
+[dir="ltr"] .listItem:not(.actionSheetMenuItem, .childrenItemsContainer .listItem) {
   padding: 0.375em !important;
 }
 
 [dir="ltr"]
-  .listItem:not(.actionSheetMenuItem, .childrenItemsContainer .listItem, .activityLogListWidget .listItem):not(
+  .listItem:not(.actionSheetMenuItem, .childrenItemsContainer .listItem):not(
     :last-child
   ) {
   margin-bottom: 0.5em;
@@ -3761,10 +3679,7 @@ ul.MuiList-root.MuiMenu-list.MuiList-dense > div:first-child {
   color: var(--std-sys-color-on-surface);
 }
 
-.listItemIcon.notification_important {
-  background-color: var(--std-sys-color-error-container) !important;
-  border: solid var(--std-sys-color-error) var(--std-border-width);
-}
+
 
 .listItemIcon.notifications:not(.listItemIcon-transparent),
 .listItemIcon.schedule:not(.listItemIcon-transparent),
@@ -4152,10 +4067,7 @@ fieldset {
   transition: transform 0.05s ease-out;
 }
 
-/* View panel */
-#viewPanel .ui-panel-inner {
-  margin-top: 4em;
-}
+
 
 
 /* ===========================================
