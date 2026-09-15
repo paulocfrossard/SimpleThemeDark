@@ -683,7 +683,7 @@ h2 {
 }
 
 .cardScalable {
-  border-radius: 0.15em;
+  border-radius: var(--std-shape-corner-medium);
   border: var(--std-border-width) solid var(--std-sys-color-outline-variant) !important;
   overflow: hidden !important;
   box-shadow: none;
@@ -832,7 +832,7 @@ h2 {
 .visualCardBox,
 .paperList {
   background-color: var(--std-sys-color-surface-container-high) !important;
-  border-radius: 0.15em !important;
+  border-radius: var(--std-shape-corner-medium) !important;
   border: var(--std-border-width) solid var(--std-sys-color-outline-variant) !important;
   box-shadow: var(--std-elevation-0) !important;
   overflow: hidden;
@@ -882,7 +882,7 @@ h2 {
 
 .innerCardFooter,
 .chapterThumbTextContainer {
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.8), 40%, transparent);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.8), 40%, transparent);
   padding: 0em 2em 2em 2em;
   align-content: end;
   display: grid;
@@ -1106,6 +1106,7 @@ h2 {
    =========================================== */
 
 .skinHeader {
+  position: fixed;
   padding-top: max(env(safe-area-inset-top), var(--safe-area-inset-top)) !important;
   color: var(--std-sys-color-on-surface);
 }
@@ -1130,7 +1131,7 @@ h2 {
   background: transparent !important;
   border-bottom: none !important;
   position: relative;
-  z-index: 100;
+  z-index: 999;
   pointer-events: auto !important;
 }
 
