@@ -1110,6 +1110,7 @@ h2 {
   position: fixed;
   padding-top: max(env(safe-area-inset-top), var(--safe-area-inset-top)) !important;
   color: var(--std-sys-color-on-surface);
+  contain: none !important;
 }
 
 /* Header clickability - comprehensive fix */
@@ -1120,6 +1121,7 @@ h2 {
   right: 0;
   z-index: 999 !important;
   pointer-events: auto !important;
+  contain: none !important;
 }
 
 .skinHeader * {
@@ -1492,7 +1494,7 @@ h2 {
 .btnPlay.detailButton {
   background-color: var(--std-sys-color-primary);
   color: var(--std-sys-color-on-primary);
-  border-radius: 0.3em;
+  border-radius: 0.3em !important;
   border: none;
   height: 3em;
   min-width: 10em;
@@ -4627,4 +4629,38 @@ body:not(.hide-scroll) > .videoPlayerContainer {
 .selectSubtitlesContainer.trackSelectionFieldContainer > label,
 .selectSourceContainer.trackSelectionFieldContainer > label {
   background-size: contain;
+}
+
+/* ===========================================
+   FORCE HEADER CLICKABILITY - Last resort
+   =========================================== */
+.skinHeader,
+.skinHeader-blurred,
+.skinHeader-withBackground,
+.headerTop,
+.headerLeft,
+.headerRight,
+.headerButton,
+.headerBackButton,
+.headerHomeButton,
+.headerSearchButton,
+.headerCastButton,
+.headerSyncButton,
+.mainDrawerButton,
+.paper-icon-button-light,
+.headerUserButton {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
+/* Remove any overlay that blocks clicks */
+.skinHeader::before,
+.skinHeader::after,
+.skinHeader-blurred::before,
+.skinHeader-blurred::after,
+.skinHeader-withBackground::before,
+.skinHeader-withBackground::after {
+  display: none !important;
+  pointer-events: none !important;
+  content: none !important;
 }
